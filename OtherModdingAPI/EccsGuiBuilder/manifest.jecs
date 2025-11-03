@@ -1,8 +1,0 @@
-ID: EccsGuiBuilder
-Name: EccsGuiBuilder
-Author: Ecconia
-Version: 1.2.4
-Priority: 10
-Type: ClientOnly
-Dependencies:
-    - EccsLogicWorldAPI
