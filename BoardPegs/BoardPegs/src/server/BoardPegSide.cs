@@ -6,11 +6,11 @@ public class BoardPegSide : BoardPeg
 {
     public override bool ShouldBeLinkedHorizontally()
     {
-        return Mathf.Abs(Component.localUp.z) >= MinimumValue;
+        return Mathf.Abs(Component.localUp.z) >= Epsilon;
     }
 
     public override bool ShouldBeLinkedVertically()
     {
-        return Mathf.Abs(Component.localUp.x) >= MinimumValue;
+        return Mathf.Abs(Component.localUp.x) >= Epsilon;
     }
 }

@@ -5,17 +5,28 @@ using UnityEngine;
 
 namespace BoardPegs.Logic;
 
-public abstract class BoardPeg : LogicComponent, IBoardPeg
+public abstract class BoardPeg : LogicComponent, IBoardPeg<ComponentAddress>
 {
-    protected float MinimumValue = 0.01f;
+    public readonly static BoardPegTracker<ComponentAddress> PrimaryBoardPegTracker = new();
 
-    public ComponentAddress? AssignedTrackerAddress { set; get; }
+    private BoardPegTracker<ComponentAddress> _lastBoardPegTracker;
+
+    protected float Epsilon = 0.01f;
+
+    public ComponentAddress AssignedTrackerKey { set; get; }
+
+    public bool IsTracked { set; get; }
 
     public ComponentAddress GenerateTrackerAddress() => Component.Parent;
 
     public virtual Vector2Int GetLinkingPosition()
     {
         return new Vector2Int((Component.LocalPositionFixed.x - 50) / 100, (Component.LocalPositionFixed.z - 50) / 100);
+    }
+
+    public virtual BoardPegTracker<ComponentAddress> GetBoardPegTracker()
+    {
+        return PrimaryBoardPegTracker;
     }
 
     public abstract bool ShouldBeLinkedHorizontally();
@@ -32,7 +43,7 @@ public abstract class BoardPeg : LogicComponent, IBoardPeg
         Inputs[0].RemoveSecretLinkWith(peg);
     }
 
-    private bool IsOnBoard()
+    private bool IsOnValidBoard()
     {
         var parent = GetParentComponent();
         return parent != null && GetParentComponent().Data.Type.NumericID == MyServer.ComponentTypesManager.GetNumericID("MHG.CircuitBoard");
@@ -50,22 +61,23 @@ public abstract class BoardPeg : LogicComponent, IBoardPeg
 
     public override void OnComponentDestroyed()
     {
-        if (AssignedTrackerAddress.HasValue)
+        if (IsTracked)
         {
-            BoardPegTracker.StopTrackingBoardPeg(this);
+            _lastBoardPegTracker.StopTrackingBoardPeg(this);
         }
     }
 
     public override void OnComponentMoved()
     {
-        if (AssignedTrackerAddress.HasValue)
+        if (IsTracked)
         {
-            BoardPegTracker.StopTrackingBoardPeg(this);
+            _lastBoardPegTracker.StopTrackingBoardPeg(this);
         }
 
-        if (IsOnBoard() && IsAlignedToBoard())
+        if (IsOnValidBoard() && IsAlignedToBoard())
         {
-            BoardPegTracker.StartTrackingBoardPeg(this);
+            _lastBoardPegTracker = GetBoardPegTracker();
+            _lastBoardPegTracker.StartTrackingBoardPeg(this);
         }
     }
 }

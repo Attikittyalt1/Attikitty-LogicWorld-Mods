@@ -1,15 +1,16 @@
-﻿using LogicAPI.Data;
-using LogicAPI.Server.Components;
+﻿using LogicAPI.Server.Components;
 using UnityEngine;
+using System;
 
 
 namespace BoardPegs.Logic;
 
-public interface IBoardPeg
+public interface IBoardPeg<T>
+    where T : IComparable<T>, IEquatable<T>
 {
-    // it feels slightly wrong to have the assigned address stored here instead of in the BoardPegTracker, but I can't think of a better way
-    public ComponentAddress? AssignedTrackerAddress { get; set; }
-    public ComponentAddress GenerateTrackerAddress();
+    public T AssignedTrackerKey { get; set; }
+    public bool IsTracked { get; set; }
+    public T GenerateTrackerAddress();
     public Vector2Int GetLinkingPosition();
     public bool ShouldBeLinkedHorizontally();
     public bool ShouldBeLinkedVertically();
