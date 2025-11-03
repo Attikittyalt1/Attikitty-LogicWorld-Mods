@@ -1,0 +1,162 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="FancyInput">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\FancyInput.dll</HintPath>
+    </Reference>
+    <Reference Include="JECS">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\JECS.dll</HintPath>
+    </Reference>
+    <Reference Include="JimmysUnityUtilities">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\JimmysUnityUtilities.dll</HintPath>
+    </Reference>
+    <Reference Include="LICC">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LICC.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicAPI">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicAPI.Client">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicAPI.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicAPI.Server">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Server\LogicAPI.Server.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicInitializable">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicInitializable.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicLocalization">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicLocalization.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicLog">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicLog.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicScript">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Server\LogicScript.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicSettings.Core">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicSettings.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicSettings.Internal">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicSettings.Internal.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicSynth">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicSynth.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicUI">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicUI.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Audio">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Audio.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Building">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Building.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.BuildingManagement">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.BuildingManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.CameraCode">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.CameraCode.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Chat">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Chat.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.CheatCodes">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.CheatCodes.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.ClientCode">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.ClientCode.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.ClientWorldStuff">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.ClientWorldStuff.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Environments">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Environments.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.GameStates">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.GameStates.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Graphics">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Input">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Input.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Interfaces">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Messages">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Messages.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Modding">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Modding.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Modding.Assets">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Modding.Assets.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Modding.Compilation">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Modding.Compilation.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Models">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Networking">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Online">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Online.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Outlines">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Outlines.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.PartialWorlds">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.PartialWorlds.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Physics">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Physics.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Players">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Players.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.References">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.References.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Rendering">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Rendering.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.SharedCode">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.SharedCode.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.UI">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Utilities">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="LogicWorld.Worlds">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\LogicWorld.Worlds.dll</HintPath>
+    </Reference>
+    <Reference Include="Server">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Server\Server.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\..\Games\Steam\steamapps\common\Logic World\Logic_World_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
