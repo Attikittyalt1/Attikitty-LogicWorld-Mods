@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BoardPegs": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "$(LogicWorldGameLocation)": ""
+      }
+    }
+  }
+}
