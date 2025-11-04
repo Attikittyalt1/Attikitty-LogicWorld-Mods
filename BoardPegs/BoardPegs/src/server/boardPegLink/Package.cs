@@ -41,24 +41,24 @@ class Package : IPackage
             hiddenPeg = null;
         }
 
-        private void LinkPeg(Link peg)
+        private void Link(Link link)
         {
             if (hiddenPeg == null)
             {
                 throw new Exception("Tried to link board peg to hidden peg that does not exist");
             }
 
-            peg.LinkPeg(hiddenPeg);
+            link.LinkPeg(hiddenPeg);
         }
 
-        private void UnlinkPeg(Link peg)
+        private void Unlink(Link link)
         {
             if (hiddenPeg == null)
             {
                 throw new Exception("Tried to unlink board peg from hidden peg that does not exist");
             }
 
-            peg.UnlinkPeg(hiddenPeg);
+            link.UnlinkPeg(hiddenPeg);
         }
 
         // use UninitializeAndClear if it is possible for the instance to still be accessed afterwords, though it probably shouldn't be
@@ -73,7 +73,7 @@ class Package : IPackage
             count = 0;
         }
 
-        public void AddLink(Link peg)
+        public void AddLink(Link link)
         {
             if (MyServer.DEBUG) LConsole.WriteLine("linking peg with current count: {0}", count);
 
@@ -83,12 +83,12 @@ class Package : IPackage
             }
 
 
-            LinkPeg(peg);
+            Link(link);
 
             count++;
         }
 
-        public void RemoveLink(Link peg)
+        public void RemoveLink(Link link)
         {
             if (count == 0)
             {
@@ -97,7 +97,7 @@ class Package : IPackage
 
             if (MyServer.DEBUG) LConsole.WriteLine("unlinking peg with current count: {0}", count);
 
-            UnlinkPeg(peg);
+            Unlink(link);
 
             if (count == 1)
             {
