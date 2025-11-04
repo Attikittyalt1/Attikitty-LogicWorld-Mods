@@ -4,47 +4,47 @@ using LogicAPI.Data;
 using System;
 using System.Collections.Generic;
 
-namespace BoardPegs.Logic.BoardPegLink;
+namespace BoardPegs.Logic.BoardPegHandling;
 
-public class PackageManager2D : IPackageManager<LinkWrapper2D>
+public class PackageManager2D : IPackageManager<Linkable2D>
 {
-    private readonly Dictionary<ComponentAddress, (IPackage horizontal, IPackage vertical)> PackagesByAddress = [];
+    private readonly Dictionary<ComponentAddress, (IRowPackage horizontal, IRowPackage vertical)> PackagesByAddress = [];
 
-    public void StartTrackingBoardPeg(LinkWrapper2D link, ComponentAddress address)
+    public void StartTrackingBoardPeg(Linkable2D linkable, ComponentAddress address)
     {
         if (!PackagesByAddress.TryGetValue(address, out var pair))
         {
-            pair.horizontal = new Package();
-            pair.vertical = new Package();
+            pair.horizontal = new RowPackage();
+            pair.vertical = new RowPackage();
             PackagesByAddress.Add(address, pair);
         }
 
-        if (link.ShouldBeLinkedHorizontally())
+        if (linkable.ShouldBeLinkedHorizontally())
         {
             if (MyServer.DEBUG) LConsole.WriteLine("linking horizontally");
-            pair.horizontal.AddLink(link.ToHorizontalLink());
+            pair.horizontal.AddLinkable(linkable.ToHorizontalLink());
         }
 
-        if (link.ShouldBeLinkedVertically())
+        if (linkable.ShouldBeLinkedVertically())
         {
             if (MyServer.DEBUG) LConsole.WriteLine("linking vertically");
-            pair.vertical.AddLink(link.ToVerticalLink());
+            pair.vertical.AddLinkable(linkable.ToVerticalLink());
         }
     }
 
-    public void StopTrackingBoardPeg(LinkWrapper2D link, ComponentAddress address)
+    public void StopTrackingBoardPeg(Linkable2D linkable, ComponentAddress address)
     {
         if (!PackagesByAddress.TryGetValue(address, out var pair))
         {
             throw new Exception("Failed to find BoardPegLinkPackages at provided address");
         }
 
-        if (pair.horizontal.TryRemoveLink(link.ToHorizontalLink()) && MyServer.DEBUG)
+        if (pair.horizontal.TryRemoveLinkable(linkable.ToHorizontalLink()) && MyServer.DEBUG)
         {
             LConsole.WriteLine("unlinked horizontally");
         }
 
-        if (pair.vertical.TryRemoveLink(link.ToVerticalLink()) && MyServer.DEBUG)
+        if (pair.vertical.TryRemoveLinkable(linkable.ToVerticalLink()) && MyServer.DEBUG)
         {
             LConsole.WriteLine("unlinked vertically");
         }

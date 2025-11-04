@@ -2,29 +2,29 @@
 using System;
 using System.Collections.Generic;
 
-namespace BoardPegs.Logic.BoardPegLink;
+namespace BoardPegs.Logic.BoardPegHandling;
 
-public class PackageManager1D : IPackageManager<Link>
+public class PackageManager1D : IPackageManager<Linkable>
 {
-    private readonly Dictionary<ComponentAddress, IPackage> PackagesByAddress = [];
-    public void StartTrackingBoardPeg(Link link, ComponentAddress address)
+    private readonly Dictionary<ComponentAddress, IRowPackage> PackagesByAddress = [];
+    public void StartTrackingBoardPeg(Linkable linkable, ComponentAddress address)
     {
         if (!PackagesByAddress.TryGetValue(address, out var package))
         {
-            package = new Package();
+            package = new RowPackage();
             PackagesByAddress.Add(address, package);
         }
 
-        package.AddLink(link);
+        package.AddLinkable(linkable);
     }
-    public void StopTrackingBoardPeg(Link link, ComponentAddress address)
+    public void StopTrackingBoardPeg(Linkable linkable, ComponentAddress address)
     {
         if (!PackagesByAddress.TryGetValue(address, out var package))
         {
             throw new Exception("Failed to find BoardPegLinkPackage at provided address");
         }
 
-        package.TryRemoveLink(link);
+        package.TryRemoveLinkable(linkable);
 
         if (package.IsEmpty())
         {

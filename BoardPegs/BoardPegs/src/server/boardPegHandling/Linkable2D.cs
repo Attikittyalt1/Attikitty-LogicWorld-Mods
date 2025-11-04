@@ -4,41 +4,38 @@ using System;
 using UnityEngine;
 
 
-namespace BoardPegs.Logic.BoardPegLink;
+namespace BoardPegs.Logic.BoardPegHandling;
 
-public class LinkWrapper2D : IEquatable<LinkWrapper2D>, IComparable<LinkWrapper2D>
+public class Linkable2D : IEquatable<Linkable2D>, IComparable<Linkable2D>
 {
     public required Func<Vector2Int> GetLinkingPosition { get; init; }
     public required Func<bool> ShouldBeLinkedHorizontally { get; init; }
     public required Func<bool> ShouldBeLinkedVertically { get; init; }
-    public required Action<IInputPeg> LinkPeg { get; init; }
-    public required Action<IInputPeg> UnlinkPeg { get; init; }
+    public required IInputPeg LinkablePeg { get; init; }
     public required ComponentAddress Address { get; init; }
 
-    public Link ToHorizontalLink() => new Link
+    public Linkable ToHorizontalLink() => new Linkable
     {
         GetLinkingPosition = () => GetLinkingPosition().x,
-        LinkPeg = LinkPeg,
-        UnlinkPeg = UnlinkPeg,
+        LinkablePeg = LinkablePeg,
         Address = Address
     };
 
-    public Link ToVerticalLink() => new Link
+    public Linkable ToVerticalLink() => new Linkable
     {
         GetLinkingPosition = () => GetLinkingPosition().y,
-        LinkPeg = LinkPeg,
-        UnlinkPeg = UnlinkPeg,
+        LinkablePeg = LinkablePeg,
         Address = Address
     };
 
-    public bool Equals(LinkWrapper2D link)
+    public bool Equals(Linkable2D linkable)
     {
-        return Address.Equals(link.Address);
+        return Address.Equals(linkable.Address);
     }
 
-    public int CompareTo(LinkWrapper2D link)
+    public int CompareTo(Linkable2D linkable)
     {
-        return Address.CompareTo(link.Address);
+        return Address.CompareTo(linkable.Address);
     }
 
     public override int GetHashCode()

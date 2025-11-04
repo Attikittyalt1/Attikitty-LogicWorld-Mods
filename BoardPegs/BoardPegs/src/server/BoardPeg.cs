@@ -4,24 +4,30 @@ using LogicAPI.Server.Components;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using BoardPegs.Logic.BoardPegLink;
+using BoardPegs.Logic.BoardPegHandling;
 using LICC;
+using System;
 
 namespace BoardPegs.Logic;
 
 public abstract class BoardPeg : LogicComponent
 {
-    public readonly static PackageManager2D manager = new();
+    public readonly static PackageManager2D PrimaryManager = new();
 
     private readonly static IEnumerable<string> ID_CIRCUITBOARDS = ["MHG.CircuitBoard"];
 
     protected float Epsilon = 0.01f;
 
-    private Handler<LinkWrapper2D> _handler;
+    private Handler<Linkable2D> _handler;
 
     private ComponentAddress GetLinkingAddress()
     {
         return Component.Parent;
+    }
+
+    protected virtual List<PackageManager2D> GetManagers()
+    {
+        return [PrimaryManager];
     }
 
     protected virtual Vector2Int GetLinkingPosition()
@@ -32,16 +38,6 @@ public abstract class BoardPeg : LogicComponent
     protected abstract bool ShouldBeLinkedHorizontally();
 
     protected abstract bool ShouldBeLinkedVertically();
-
-    private void LinkPeg(IInputPeg peg)
-    {
-        Inputs[0].AddSecretLinkWith(peg);
-    }
-
-    private void UnlinkPeg(IInputPeg peg)
-    {
-        Inputs[0].RemoveSecretLinkWith(peg);
-    }
 
     public bool IsOnValidBoard()
     {
@@ -57,18 +53,16 @@ public abstract class BoardPeg : LogicComponent
 
     protected override void Initialize()
     {
-        _handler = new Handler<LinkWrapper2D>
+        _handler = new Handler<Linkable2D>
         {
             GetAddress = () => GetLinkingAddress(),
-            PackageManager = manager,
-            Link = new LinkWrapper2D
+            Linkable = new Linkable2D
             {
                 Address = Address,
-                ShouldBeLinkedHorizontally = ShouldBeLinkedHorizontally,
-                ShouldBeLinkedVertically = ShouldBeLinkedVertically,
+                LinkablePeg = Inputs[0],
                 GetLinkingPosition = GetLinkingPosition,
-                LinkPeg = LinkPeg,
-                UnlinkPeg = UnlinkPeg
+                ShouldBeLinkedHorizontally = ShouldBeLinkedHorizontally,
+                ShouldBeLinkedVertically = ShouldBeLinkedVertically
             }
         };
     }
@@ -84,7 +78,7 @@ public abstract class BoardPeg : LogicComponent
 
         if (IsOnValidBoard() && IsAlignedToBoard())
         {
-            _handler.TryStartTracking();
+            _handler.TryStartTracking(GetManagers());
         }
     }
 
