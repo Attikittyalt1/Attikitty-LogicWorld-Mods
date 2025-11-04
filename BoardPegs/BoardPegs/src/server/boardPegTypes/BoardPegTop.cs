@@ -2,7 +2,7 @@
 
 namespace BoardPegs.Logic;
 
-public class BoardPegTop : BoardPeg
+public class BoardPegTop : BoardPegTrackable
 {
     public override bool ShouldBeLinkedHorizontally()
     {

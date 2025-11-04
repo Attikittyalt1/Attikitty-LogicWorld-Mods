@@ -5,12 +5,8 @@ using UnityEngine;
 
 namespace BoardPegs.Logic;
 
-public interface IBoardPegTrackable<T>
-    where T : IComparable<T>, IEquatable<T>
+public interface IBoardPegTrackable
 {
-    public T AssignedTrackerKey { get; set; }
-    public bool IsTracked { get; set; }
-    public T GenerateTrackerKey();
     public Vector2Int GetLinkingPosition();
     public bool ShouldBeLinkedHorizontally();
     public bool ShouldBeLinkedVertically();
