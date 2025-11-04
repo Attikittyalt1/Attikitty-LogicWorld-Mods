@@ -13,5 +13,4 @@ public class BoardPegSideOrTop : BoardPeg
     {
         return Mathf.Abs(Component.localUp.x) >= Epsilon || Mathf.Abs(Component.localUp.y) >= Epsilon;
     }
-
 }

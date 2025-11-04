@@ -1,7 +1,6 @@
 ﻿using EccsLogicWorldAPI.Server;
 using JimmysUnityUtilities;
 using LICC;
-using LogicAPI.Data;
 using LogicWorld.Server.Circuitry;
 using System;
 using System.Collections.Generic;
@@ -47,7 +46,7 @@ public class BoardPegTracker<T>
                 hiddenPeg = null;
             }
 
-            private void LinkPeg(IBoardPeg<T> peg)
+            private void LinkPeg(IBoardPegTrackable<T> peg)
             {
                 if (hiddenPeg == null)
                 {
@@ -57,7 +56,7 @@ public class BoardPegTracker<T>
                 peg.LinkPeg(hiddenPeg);
             }
 
-            private void UnlinkPeg(IBoardPeg<T> peg)
+            private void UnlinkPeg(IBoardPegTrackable<T> peg)
             {
                 if (hiddenPeg == null)
                 {
@@ -79,7 +78,7 @@ public class BoardPegTracker<T>
                 count = 0;
             }
 
-            public void AddPeg(IBoardPeg<T> peg)
+            public void AddPeg(IBoardPegTrackable<T> peg)
             {
                 if (DEBUG) LConsole.WriteLine("linking peg with current count: {0}", count);
 
@@ -94,7 +93,7 @@ public class BoardPegTracker<T>
                 count++;
             }
 
-            public void RemovePeg(IBoardPeg<T> peg)
+            public void RemovePeg(IBoardPegTrackable<T> peg)
             {
                 if (count == 0)
                 {
@@ -131,7 +130,7 @@ public class BoardPegTracker<T>
             public bool vertical;
         }
 
-        private Dictionary<IBoardPeg<T>, PegPositionData> BoardPegPositions = [];
+        private Dictionary<IBoardPegTrackable<T>, PegPositionData> BoardPegPositions = [];
 
         private Dictionary<int, HiddenPegData> HorizontalHiddenPegs = [];
 
@@ -191,7 +190,7 @@ public class BoardPegTracker<T>
             VerticalHiddenPegs.Clear();
         }
 
-        public void AddPeg(IBoardPeg<T> boardPeg)
+        public void AddPeg(IBoardPegTrackable<T> boardPeg)
         {
             CheckForPositionChanges();
 
@@ -207,7 +206,7 @@ public class BoardPegTracker<T>
             BoardPegPositions.Add(boardPeg, data);
         }
 
-        public void RemovePeg(IBoardPeg<T> boardPeg)
+        public void RemovePeg(IBoardPegTrackable<T> boardPeg)
         {
             CheckForPositionChanges();
 
@@ -255,7 +254,7 @@ public class BoardPegTracker<T>
             return firstPair.Key.GetLinkingPosition() != firstPair.Value.position;
         }
 
-        private void AddPegPosition(IBoardPeg<T> boardPeg, PegPositionData data)
+        private void AddPegPosition(IBoardPegTrackable<T> boardPeg, PegPositionData data)
         {
             if (DEBUG) LConsole.WriteLine("started to add peg at position: {0}, {1}", data.position.x, data.position.y);
 
@@ -283,7 +282,7 @@ public class BoardPegTracker<T>
             }
         }
 
-        private void RemovePegPosition(IBoardPeg<T> boardPeg, PegPositionData data)
+        private void RemovePegPosition(IBoardPegTrackable<T> boardPeg, PegPositionData data)
         {
             if (DEBUG) LConsole.WriteLine("started to remove peg at position: {0}, {1}", data.position.x, data.position.y);
 
@@ -318,7 +317,7 @@ public class BoardPegTracker<T>
             }
         }
 
-        private PegPositionData GetBoardPegData(IBoardPeg<T> boardPeg)
+        private PegPositionData GetBoardPegData(IBoardPegTrackable<T> boardPeg)
         {
             return new PegPositionData
             {
@@ -330,37 +329,37 @@ public class BoardPegTracker<T>
 
     }
 
-    private readonly Dictionary<T, BoardPegPackage> BoardPegPackageByAddress = [];
+    private readonly Dictionary<T, BoardPegPackage> BoardPegPackages = [];
 
-    public void StartTrackingBoardPeg(IBoardPeg<T> boardPeg)
+    public void StartTrackingBoardPeg(IBoardPegTrackable<T> boardPeg)
     {
         if (boardPeg.IsTracked)
         {
             throw new Exception("Tried to start tracking BoardPeg that's already being tracked");
         }
 
-        var address = boardPeg.GenerateTrackerAddress();
+        var key = boardPeg.GenerateTrackerKey();
 
-        if (!BoardPegPackageByAddress.TryGetValue(address, out var package))
+        if (!BoardPegPackages.TryGetValue(key, out var package))
         {
             package = new BoardPegPackage();
-            BoardPegPackageByAddress.Add(address, package);
+            BoardPegPackages.Add(key, package);
         }
 
         package.AddPeg(boardPeg);
-        boardPeg.AssignedTrackerKey = address;
+        boardPeg.AssignedTrackerKey = key;
         boardPeg.IsTracked = true;
     }
 
-    public void StopTrackingBoardPeg(IBoardPeg<T> boardPeg)
+    public void StopTrackingBoardPeg(IBoardPegTrackable<T> boardPeg)
     {
         if (!boardPeg.IsTracked)
         {
             throw new Exception("Tried to stop tracking BoardPeg that wasn't being tracked");
         }
 
-        var address = boardPeg.AssignedTrackerKey;
-        var package = BoardPegPackageByAddress[address];
+        var key = boardPeg.AssignedTrackerKey;
+        var package = BoardPegPackages[key];
 
         package.RemovePeg(boardPeg);
         boardPeg.AssignedTrackerKey = default;
@@ -369,7 +368,7 @@ public class BoardPegTracker<T>
         if (package.IsEmpty())
         {
             package.Uninitialize();
-            BoardPegPackageByAddress.Remove(address);
+            BoardPegPackages.Remove(key);
         }
     }
 }

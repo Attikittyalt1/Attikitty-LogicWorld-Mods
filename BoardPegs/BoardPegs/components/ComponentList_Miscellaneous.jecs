@@ -30,3 +30,46 @@ BoardPeg:
             - (5/6, 0)
         canBeFlipped: false
         allowFineRotation: false
+
+BoardPegWalled:
+    column: "Miscellaneous"
+    category: "Routing"
+    prefab:
+        blocks:
+            -   
+                position: (0, 0, 0)
+                scale: (1/3, 1/6, 1/3)
+
+            -   
+                position: (5/24, 0, 0)
+                scale: (1/12, 3/12, 1/3)
+                color: ff0000
+
+            -   
+                position: (-5/24, 0, 0)
+                scale: (1/12, 3/12, 1/3)
+                color: ff0000
+        inputs:
+            -
+                length: 0.4
+                position: (0, 0, 0)
+    logicCode: BoardPegs.Logic.BoardPegWalled
+    placingRules:
+        secondaryGridPositions:
+            - (1/6, 1/6)
+            - (1/6, 3/6)
+            - (1/6, 5/6)
+            - (3/6, 1/6)
+            - (3/6, 3/6)
+            - (3/6, 5/6)
+            - (5/6, 1/6)
+            - (5/6, 3/6)
+            - (5/6, 5/6)
+        primaryEdgePositions:
+            - (1/2, 0)
+        secondaryEdgePositions:
+            - (1/6, 0)
+            - (3/6, 0)
+            - (5/6, 0)
+        canBeFlipped: false
+        allowFineRotation: false

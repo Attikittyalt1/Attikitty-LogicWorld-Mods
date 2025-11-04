@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "BoardPegs": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "$(LogicWorldGameLocation)": "D:\\Games\\Steam\\steamapps\\common\\Logic World"
+      }
+    }
+  }
+}

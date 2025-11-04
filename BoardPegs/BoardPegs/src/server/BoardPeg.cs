@@ -1,12 +1,16 @@
 ﻿using BoardPegs.Server;
 using LogicAPI.Data;
 using LogicAPI.Server.Components;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BoardPegs.Logic;
 
-public abstract class BoardPeg : LogicComponent, IBoardPeg<ComponentAddress>
+public abstract class BoardPeg : LogicComponent, IBoardPegTrackable<ComponentAddress>
 {
+    private readonly static IEnumerable<string> ID_CIRCUITBOARDS = ["MHG.CircuitBoard"];
+
     public readonly static BoardPegTracker<ComponentAddress> PrimaryBoardPegTracker = new();
 
     private BoardPegTracker<ComponentAddress> _lastBoardPegTracker;
@@ -17,16 +21,16 @@ public abstract class BoardPeg : LogicComponent, IBoardPeg<ComponentAddress>
 
     public bool IsTracked { set; get; }
 
-    public ComponentAddress GenerateTrackerAddress() => Component.Parent;
-
-    public virtual Vector2Int GetLinkingPosition()
-    {
-        return new Vector2Int((Component.LocalPositionFixed.x - 50) / 100, (Component.LocalPositionFixed.z - 50) / 100);
-    }
+    public ComponentAddress GenerateTrackerKey() => Component.Parent;
 
     public virtual BoardPegTracker<ComponentAddress> GetBoardPegTracker()
     {
         return PrimaryBoardPegTracker;
+    }
+
+    public virtual Vector2Int GetLinkingPosition()
+    {
+        return new Vector2Int((Component.LocalPositionFixed.x - 50) / 100, (Component.LocalPositionFixed.z - 50) / 100);
     }
 
     public abstract bool ShouldBeLinkedHorizontally();
@@ -46,7 +50,13 @@ public abstract class BoardPeg : LogicComponent, IBoardPeg<ComponentAddress>
     private bool IsOnValidBoard()
     {
         var parent = GetParentComponent();
-        return parent != null && GetParentComponent().Data.Type.NumericID == MyServer.ComponentTypesManager.GetNumericID("MHG.CircuitBoard");
+
+        return parent != null && IsCircuitBoard(parent.Data.Type);
+    }
+
+    private bool IsCircuitBoard(ComponentType type)
+    {
+        return ID_CIRCUITBOARDS.Any(id => type.NumericID == MyServer.ComponentTypesManager.GetNumericID(id));
     }
 
     private bool IsAlignedToBoard()
