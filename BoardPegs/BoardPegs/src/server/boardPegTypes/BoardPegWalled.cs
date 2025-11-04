@@ -1,17 +1,15 @@
-﻿using LogicAPI.Data;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BoardPegs.Logic;
 
-public class BoardPegWalled : BoardPegTrackable
+public class BoardPegWalled : BoardPeg
 {
-
-    public override bool ShouldBeLinkedHorizontally()
+    protected override bool ShouldBeLinkedHorizontally()
     {
         return Mathf.Abs(Component.localForward.z) >= Epsilon;
     }
 
-    public override bool ShouldBeLinkedVertically()
+    protected override bool ShouldBeLinkedVertically()
     {
         return Mathf.Abs(Component.localForward.x) >= Epsilon;
     }

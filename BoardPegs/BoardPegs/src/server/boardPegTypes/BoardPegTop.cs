@@ -2,14 +2,14 @@
 
 namespace BoardPegs.Logic;
 
-public class BoardPegTop : BoardPegTrackable
+public class BoardPegTop : BoardPeg
 {
-    public override bool ShouldBeLinkedHorizontally()
+    protected override bool ShouldBeLinkedHorizontally()
     {
         return Mathf.Abs(Component.localUp.y) >= Epsilon;
     }
 
-    public override bool ShouldBeLinkedVertically()
+    protected override bool ShouldBeLinkedVertically()
     {
         return Mathf.Abs(Component.localUp.y) >= Epsilon;
     }
