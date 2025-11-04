@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
+	<LogicWorldGameLocation>D:\Games\Steam\steamapps\common\Logic World</LogicWorldGameLocation> <!-- i can't figure out how to add an enviorment variable to visual studio so its here for now -->
   </PropertyGroup>
 
   <ItemGroup>
