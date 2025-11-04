@@ -11,6 +11,8 @@ namespace BoardPegs.Logic;
 public abstract class BoardPegTrackable : LogicComponent, IBoardPegTrackable
 {
     public readonly static BoardPegTracker<ComponentAddress> PrimaryBoardPegTracker = new();
+    public readonly static BoardPegTracker<ComponentAddress> SecondaryBoardPegTracker = new();
+
     private readonly static IEnumerable<string> ID_CIRCUITBOARDS = ["MHG.CircuitBoard"];
 
     protected float Epsilon = 0.01f;

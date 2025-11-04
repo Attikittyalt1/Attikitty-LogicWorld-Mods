@@ -65,11 +65,5 @@ BoardPegWalled:
             - (5/6, 1/6)
             - (5/6, 3/6)
             - (5/6, 5/6)
-        primaryEdgePositions:
-            - (1/2, 0)
-        secondaryEdgePositions:
-            - (1/6, 0)
-            - (3/6, 0)
-            - (5/6, 0)
         canBeFlipped: false
         allowFineRotation: false
