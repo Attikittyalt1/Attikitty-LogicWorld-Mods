@@ -123,7 +123,7 @@ class RowPackage : IRowPackage
 
         if (!LinkedRows.TryGetValue(position, out var linkedRow))
         {
-            linkedRow = new LinkedRowWithPegs() 
+            linkedRow = new LinkedRowWithManualLinking() 
             { 
                 //MaxLonelies = 2
             };

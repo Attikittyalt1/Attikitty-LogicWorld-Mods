@@ -7,7 +7,7 @@ using System;
 
 namespace BoardPegs.Logic.BoardPegHandling;
 
-class LinkedRowWithHidden : ILinkedRow
+class LinkedRowWithHiddenPeg : ILinkedRow
 {
     private InputPeg _hiddenPeg;
     private int _count;

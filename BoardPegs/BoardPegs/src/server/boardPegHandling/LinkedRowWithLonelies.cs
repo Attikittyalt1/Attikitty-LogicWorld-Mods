@@ -12,7 +12,7 @@ class LinkedRowWithLonelies : ILinkedRow
 {
     private InputPeg _hiddenPeg;
     private int _count;
-    private readonly List<InputPeg> _lonelyPegs = []; //this could probably be an array
+    private readonly List<InputPeg> _lonelyPegs = [];
 
     public required int MaxLonelies { get; init; }
 

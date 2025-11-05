@@ -15,7 +15,7 @@ You can ignore all other files outside the `mod folder`s.
 
 ## Additional Notes and Thank Yous
 
-Thanks to Ecconia and all other other modders for the help they gave in the proccess of me making these mods.
+Thanks to Ecconia and all the other modders for the help they gave in the proccess of me making these mods.
 
 And thanks to Jimmy and all the other devs for making this awesome game!
 

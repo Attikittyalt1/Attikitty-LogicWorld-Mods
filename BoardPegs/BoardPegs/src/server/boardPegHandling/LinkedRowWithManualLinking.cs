@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace BoardPegs.Logic.BoardPegHandling;
 
-class LinkedRowWithPegs : ILinkedRow
+class LinkedRowWithManualLinking : ILinkedRow
 {
     private readonly List<InputPeg> _pegs = [];
 
