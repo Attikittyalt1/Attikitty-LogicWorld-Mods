@@ -2,13 +2,12 @@
 using LogicAPI.Server;
 using LogicAPI.Services;
 using LogicWorld.SharedCode.Components;
-using System.Diagnostics;
 
 namespace BoardPegs.Server;
 
 public class MyServer : ServerMod
 {
-    public const bool DEBUG = true;
+    public const bool DEBUG = false;
 
     public static IWorldData WorldData { get; private set; }
     public static ComponentTypesManager ComponentTypesManager { get; private set; }

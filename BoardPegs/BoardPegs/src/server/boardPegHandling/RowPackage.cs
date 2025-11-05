@@ -1,7 +1,5 @@
-﻿using EccsLogicWorldAPI.Server;
-using JimmysUnityUtilities;
+﻿using JimmysUnityUtilities;
 using LICC;
-using LogicWorld.Server.Circuitry;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -125,9 +123,9 @@ class RowPackage : IRowPackage
 
         if (!LinkedRows.TryGetValue(position, out var linkedRow))
         {
-            linkedRow = new LinkedRowWithLonelies() 
+            linkedRow = new LinkedRowWithPegs() 
             { 
-                MaxLonelies = 3
+                //MaxLonelies = 2
             };
             LinkedRows.Add(position, linkedRow);
         }
