@@ -127,7 +127,7 @@ class RowPackage : IRowPackage
         {
             linkedRow = new LinkedRowWithLonelies() 
             { 
-                MaxLonelies = 2
+                MaxLonelies = 3
             };
             LinkedRows.Add(position, linkedRow);
         }

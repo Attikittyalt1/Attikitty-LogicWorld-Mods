@@ -39,15 +39,19 @@ public class PackageManager2D : IPackageManager<Linkable2D>
             throw new Exception("Failed to find BoardPegLinkPackages at provided address");
         }
 
-        if (pair.horizontal.TryRemoveLinkable(linkable.ToHorizontalLink()) && MyServer.DEBUG)
+        if (MyServer.DEBUG && pair.horizontal.HasLinkable(linkable.ToVerticalLink()))
         {
-            LConsole.WriteLine("unlinked horizontally");
+            LConsole.WriteLine("unlinking vertically");
         }
 
-        if (pair.vertical.TryRemoveLinkable(linkable.ToVerticalLink()) && MyServer.DEBUG)
+        pair.horizontal.TryRemoveLinkable(linkable.ToVerticalLink());
+
+        if (MyServer.DEBUG && pair.vertical.HasLinkable(linkable.ToVerticalLink()))
         {
-            LConsole.WriteLine("unlinked vertically");
+            LConsole.WriteLine("unlinking vertically");
         }
+
+        pair.vertical.TryRemoveLinkable(linkable.ToVerticalLink());
 
         if (pair.horizontal.IsEmpty() && pair.vertical.IsEmpty())
         {

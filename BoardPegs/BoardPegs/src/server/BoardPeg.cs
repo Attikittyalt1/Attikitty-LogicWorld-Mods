@@ -12,11 +12,13 @@ namespace BoardPegs.Logic;
 
 public abstract class BoardPeg : LogicComponent
 {
-    public readonly static PackageManager2D PrimaryManager = new();
+    public readonly static PackageManager2D ManagerAtBoardHeight = new();
+    public readonly static PackageManager2D ManagerAboveBoard = new();
+    public readonly static PackageManager2D ManagerBelowBoard = new();
 
     private readonly static IEnumerable<string> ID_CIRCUITBOARDS = ["MHG.CircuitBoard"];
 
-    protected float Epsilon = 0.01f;
+    protected const float Epsilon = 0.01f;
 
     private Handler<Linkable2D> _handler;
 
@@ -25,9 +27,9 @@ public abstract class BoardPeg : LogicComponent
         return Component.Parent;
     }
 
-    protected virtual List<PackageManager2D> GetManagers()
+    protected virtual List<PackageManager2D> FindManagers()
     {
-        return [PrimaryManager];
+        return [ManagerAtBoardHeight];
     }
 
     protected virtual Vector2Int GetLinkingPosition()
@@ -78,7 +80,7 @@ public abstract class BoardPeg : LogicComponent
 
         if (IsOnValidBoard() && IsAlignedToBoard())
         {
-            _handler.TryStartTracking(GetManagers());
+            _handler.TryStartTracking(FindManagers());
         }
     }
 

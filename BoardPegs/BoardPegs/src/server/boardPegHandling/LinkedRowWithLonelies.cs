@@ -33,7 +33,6 @@ class LinkedRowWithLonelies : ILinkedRow
 
     public void AddPeg(IInputPeg peg)
     {
-        if (MyServer.DEBUG) LConsole.WriteLine("is peg null? {0}", (InputPeg)peg == null);
         if (_count < MaxLonelies)
         {
             var index = _count;
@@ -48,9 +47,9 @@ class LinkedRowWithLonelies : ILinkedRow
             {
                 if (MyServer.DEBUG)
                 {
-                    LConsole.WriteLine("are the links null or equal?: {0}, {1}, {2}", 
-                        _lonelyPegs[index].SecretLinks == null, 
-                        _lonelyPegs[index - 1].SecretLinks == null, 
+                    LConsole.WriteLine("are the links null or equal?: {0}, {1}, {2}",
+                        _lonelyPegs[index].SecretLinks == null,
+                        _lonelyPegs[index - 1].SecretLinks == null,
                         _lonelyPegs[index] == _lonelyPegs[index - 1]);
                 }
                 if (MyServer.DEBUG && _lonelyPegs[index].SecretLinks != null)
@@ -66,21 +65,31 @@ class LinkedRowWithLonelies : ILinkedRow
         }
         else
         {
+            LConsole.WriteLine("hidden peg link count before adding: {0}", _count);
+
             if (_count == MaxLonelies)
             {
                 InitializeHiddenPeg();
 
-                foreach (var lonelyPeg in _lonelyPegs)
+                if (MaxLonelies > 0)
                 {
-                    lonelyPeg.RemoveAllSecretLinks();
+                    _lonelyPegs[0].AddSecretLinkWith(_hiddenPeg);
 
-                    lonelyPeg.AddSecretLinkWith(_hiddenPeg);
+                    for (int i = 1; i < _count; i++)
+                    {
+                        _lonelyPegs[i].RemoveSecretLinkWith(_lonelyPegs[i - 1]);
+
+                        _lonelyPegs[i].AddSecretLinkWith(_hiddenPeg);
+                    }
+
+                    _lonelyPegs.Clear();
                 }
-
-                _lonelyPegs.Clear();
             }
 
             peg.AddSecretLinkWith(_hiddenPeg);
+
+
+            LConsole.WriteLine("hidden peg secret links after adding: {0}", _hiddenPeg.SecretLinks.Count);
         }
 
         _count++;
@@ -92,8 +101,6 @@ class LinkedRowWithLonelies : ILinkedRow
         {
             throw new Exception("Tried to remove peg from HiddenPegData that is already empty");
         }
-
-        if (MyServer.DEBUG) LConsole.WriteLine("is peg null? {0}", (InputPeg)peg == null);
 
         _count--;
 
@@ -110,17 +117,20 @@ class LinkedRowWithLonelies : ILinkedRow
 
             if (index > 0)
             {
+                LConsole.WriteLine("A");
                 _lonelyPegs[index].RemoveSecretLinkWith(_lonelyPegs[index - 1]);
             }
 
             if (index < _count)
             {
+                LConsole.WriteLine("B");
                 _lonelyPegs[index].RemoveSecretLinkWith(_lonelyPegs[index + 1]);
             }
 
             if (index > 0 && index < _count)
             {
-                _lonelyPegs[index - 1].AddSecretLinkWith(_lonelyPegs[index - 1]);
+                LConsole.WriteLine("C");
+                _lonelyPegs[index - 1].AddSecretLinkWith(_lonelyPegs[index + 1]);
             }
 
             if (MyServer.DEBUG) LConsole.WriteLine("test length before: {0}", _lonelyPegs.Count);
@@ -134,19 +144,26 @@ class LinkedRowWithLonelies : ILinkedRow
         }
         else
         {
+            LConsole.WriteLine("hidden peg link count before removing: {0}", _count);
+
+            LConsole.WriteLine("hidden peg secret links before adding: {0}", _hiddenPeg.SecretLinks.Count);
+
             peg.RemoveSecretLinkWith(_hiddenPeg);
 
             if (_count == MaxLonelies)
             {
-                var linkedPegs = _hiddenPeg.SecretLinks;
-
-                _lonelyPegs.Add(linkedPegs[0]);
-
-                for (int i = 1; i < MaxLonelies; i++)
+                if (MaxLonelies > 0)
                 {
-                    _lonelyPegs.Add(linkedPegs[i]);
+                    var linkedPegs = _hiddenPeg.SecretLinks;
 
-                    _lonelyPegs[i].AddSecretLinkWith(_lonelyPegs[i - 1]);
+                    _lonelyPegs.Add(linkedPegs[0]);
+
+                    for (int i = 1; i < MaxLonelies; i++)
+                    {
+                        _lonelyPegs.Add(linkedPegs[i]);
+
+                        _lonelyPegs[i].AddSecretLinkWith(_lonelyPegs[i - 1]);
+                    }
                 }
 
                 UninitializeHiddenPeg();
