@@ -9,21 +9,24 @@ namespace BoardPegs.Logic.BoardPegHandling;
 public class Linkable2D : IEquatable<Linkable2D>, IComparable<Linkable2D>
 {
     public required Func<Vector2Int> GetLinkingPosition { get; init; }
+    public required Func<bool> HasBeenMoved { get; init; }
     public required Func<bool> ShouldBeLinkedHorizontally { get; init; }
     public required Func<bool> ShouldBeLinkedVertically { get; init; }
     public required IInputPeg LinkablePeg { get; init; }
     public required ComponentAddress Address { get; init; }
 
-    public Linkable ToHorizontalLink() => new Linkable
+    public Linkable ToHorizontalLinkable() => new Linkable
     {
         GetLinkingPosition = () => GetLinkingPosition().x,
+        HasBeenMoved = HasBeenMoved,
         LinkablePeg = LinkablePeg,
         Address = Address
     };
 
-    public Linkable ToVerticalLink() => new Linkable
+    public Linkable ToVerticalLinkable() => new Linkable
     {
         GetLinkingPosition = () => GetLinkingPosition().y,
+        HasBeenMoved = HasBeenMoved,
         LinkablePeg = LinkablePeg,
         Address = Address
     };

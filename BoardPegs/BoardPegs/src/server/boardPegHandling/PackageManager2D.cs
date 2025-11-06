@@ -22,13 +22,13 @@ public class PackageManager2D : IPackageManager<Linkable2D>
         if (linkable.ShouldBeLinkedHorizontally())
         {
             if (MyServer.DEBUG) LConsole.WriteLine("linking horizontally");
-            pair.horizontal.AddLinkable(linkable.ToHorizontalLink());
+            pair.horizontal.AddLinkable(linkable.ToHorizontalLinkable());
         }
 
         if (linkable.ShouldBeLinkedVertically())
         {
             if (MyServer.DEBUG) LConsole.WriteLine("linking vertically");
-            pair.vertical.AddLinkable(linkable.ToVerticalLink());
+            pair.vertical.AddLinkable(linkable.ToVerticalLinkable());
         }
     }
 
@@ -39,19 +39,19 @@ public class PackageManager2D : IPackageManager<Linkable2D>
             throw new Exception("Failed to find BoardPegLinkPackages at provided address");
         }
 
-        if (MyServer.DEBUG && pair.horizontal.HasLinkable(linkable.ToVerticalLink()))
+        if (MyServer.DEBUG && pair.horizontal.HasLinkable(linkable.ToHorizontalLinkable()))
+        {
+            LConsole.WriteLine("unlinking horizontally");
+        }
+
+        pair.horizontal.TryRemoveLinkable(linkable.ToHorizontalLinkable());
+
+        if (MyServer.DEBUG && pair.vertical.HasLinkable(linkable.ToVerticalLinkable()))
         {
             LConsole.WriteLine("unlinking vertically");
         }
 
-        pair.horizontal.TryRemoveLinkable(linkable.ToVerticalLink());
-
-        if (MyServer.DEBUG && pair.vertical.HasLinkable(linkable.ToVerticalLink()))
-        {
-            LConsole.WriteLine("unlinking vertically");
-        }
-
-        pair.vertical.TryRemoveLinkable(linkable.ToVerticalLink());
+        pair.vertical.TryRemoveLinkable(linkable.ToVerticalLinkable());
 
         if (pair.horizontal.IsEmpty() && pair.vertical.IsEmpty())
         {

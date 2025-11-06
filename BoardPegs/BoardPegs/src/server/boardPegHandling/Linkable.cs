@@ -8,6 +8,7 @@ namespace BoardPegs.Logic.BoardPegHandling;
 public class Linkable : IEquatable<Linkable>, IComparable<Linkable>
 {
     public required Func<int> GetLinkingPosition { get; init; }
+    public required Func<bool> HasBeenMoved { get; init; }
     public required IInputPeg LinkablePeg { get; init; }
     public required ComponentAddress Address { get; init; }
 

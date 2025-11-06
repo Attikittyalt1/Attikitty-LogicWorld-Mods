@@ -16,7 +16,6 @@ public class BoardPegWalled : BoardPeg
 
     protected override bool ShouldBeLinkedHorizontally()
     {
-        LConsole.WriteLine("YYY: {0}", Component.LocalPositionFixed.y);
         return Mathf.Abs(Component.localForward.z) >= Epsilon && Mathf.Abs(Component.localUp.y) >= Epsilon || Mathf.Abs(Component.localUp.z) >= Epsilon;
     }
 

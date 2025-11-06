@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using BoardPegs.Server;
+using UnityEngine;
 
 namespace BoardPegs.Logic.BoardPegHandling;
 
@@ -28,9 +29,8 @@ class RowPackage : IRowPackage
             throw new Exception("Tried to uninitialize package that is not empty");
         }
 
-        foreach (var value in LinkedRows)
+        foreach (var linkedRow in LinkedRows.Values)
         {
-            var linkedRow = value.Value;
             if (linkedRow.IsInitialized())
             {
                 linkedRow.Uninitialize();
@@ -40,9 +40,8 @@ class RowPackage : IRowPackage
 
     public void UninitializeAndClear()
     {
-        foreach (var value in LinkedRows)
+        foreach (var linkedRow in LinkedRows.Values)
         {
-            var linkedRow = value.Value;
             if (linkedRow.IsInitialized())
             {
                 linkedRow.UninitializeAndClear();
@@ -55,7 +54,7 @@ class RowPackage : IRowPackage
 
     public void AddLinkable(Linkable linkable)
     {
-        CheckForPositionChanges();
+        CheckForPositionChangeFromBoard();
 
         if (LinkablePositions.ContainsKey(linkable))
         {
@@ -71,8 +70,6 @@ class RowPackage : IRowPackage
 
     public void RemoveLinkable(Linkable linkable)
     {
-        CheckForPositionChanges();
-
         if (!LinkablePositions.TryGetValue(linkable, out var position))
         {
             throw new Exception("Tried to remove linkable from package that does not contain it");
@@ -83,38 +80,39 @@ class RowPackage : IRowPackage
         LinkablePositions.Remove(linkable);
     }
 
-    private void CheckForPositionChanges()
+    private void CheckForPositionChangeFromBoard()
     {
-        if (!HasPositionChanged())
-        {
-            return;
-        }
+        int positionChange = GetPositionChangeFromBoard();
+        if (positionChange == 0) return;
 
-        foreach (var pair in LinkablePositions)
-        {
+        // i should really use an immutable approach. maybe just a foreach loop would better but this just looks so nice
+        LinkablePositions = LinkablePositions.ToDictionary(
+            entry => entry.Key,
+            entry => entry.Value + positionChange
+        );
 
-            var linkable = pair.Key;
-            var position = pair.Value;
-
-            UnlinkAtPosition(linkable, position);
-
-            var newPosition = linkable.GetLinkingPosition();
-
-            LinkAtPosition(linkable, newPosition);
-
-            LinkablePositions[linkable] = newPosition;
-        }
+        // same thing as before
+        LinkedRows = LinkedRows.ToDictionary(
+            entry => entry.Key + positionChange,
+            entry => entry.Value
+        );
     }
 
-    private bool HasPositionChanged()
+    private int GetPositionChangeFromBoard()
     {
-        if (LinkablePositions.Count == 0)
+        // this function makes the assumption that if a peg's global position has not changed, then any local position changes must be due to a board resizing
+
+        foreach (var (linkable, oldPosition) in LinkablePositions)
         {
-            return false;
+            var change = linkable.GetLinkingPosition() - oldPosition;
+
+            if (!linkable.HasBeenMoved() && change != 0)
+            {
+                return change;
+            }
         }
 
-        var firstPair = LinkablePositions.First();
-        return firstPair.Key.GetLinkingPosition() != firstPair.Value;
+        return 0;
     }
 
     private void LinkAtPosition(Linkable linkable, int position)
@@ -123,8 +121,8 @@ class RowPackage : IRowPackage
 
         if (!LinkedRows.TryGetValue(position, out var linkedRow))
         {
-            linkedRow = new LinkedRowWithManualLinking() 
-            { 
+            linkedRow = new LinkedRowWithManualLinking()
+            {
                 //MaxLonelies = 2
             };
             LinkedRows.Add(position, linkedRow);

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using BoardPegs.Logic.BoardPegHandling;
+using JimmysUnityUtilities;
 
 namespace BoardPegs.Logic;
 
@@ -18,11 +19,17 @@ public abstract class BoardPeg : LogicComponent
 
     protected const float Epsilon = 0.01f;
 
+    private Vector3 previousLocation;
     private Handler<Linkable2D> _handler;
 
     private ComponentAddress GetLinkingAddress()
     {
         return Component.Parent;
+    }
+
+    private bool HasBeenMoved()
+    {
+        return !Component.WorldPosition.IsPrettyCloseTo(previousLocation);
     }
 
     protected virtual List<PackageManager2D> FindManagers()
@@ -38,7 +45,7 @@ public abstract class BoardPeg : LogicComponent
     protected abstract bool ShouldBeLinkedHorizontally();
 
     protected abstract bool ShouldBeLinkedVertically();
-
+     
     public bool IsOnValidBoard()
     {
         var parent = GetParentComponent();
@@ -61,10 +68,13 @@ public abstract class BoardPeg : LogicComponent
                 Address = Address,
                 LinkablePeg = Inputs[0],
                 GetLinkingPosition = GetLinkingPosition,
+                HasBeenMoved = HasBeenMoved,
                 ShouldBeLinkedHorizontally = ShouldBeLinkedHorizontally,
                 ShouldBeLinkedVertically = ShouldBeLinkedVertically
             }
         };
+
+        previousLocation = Component.WorldPosition;
     }
 
     public override void OnComponentDestroyed()
@@ -80,6 +90,8 @@ public abstract class BoardPeg : LogicComponent
         {
             _handler.TryStartTracking(FindManagers());
         }
+
+        previousLocation = Component.WorldPosition;
     }
 
     private IComponentInWorld GetParentComponent()
