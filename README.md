@@ -24,3 +24,4 @@ And thanks to Jimmy and all the other devs for making this awesome game!
 #### Client & Server: (Installed on both sides)
 
 - `BoardPegs`: Adds pegs that connect via the grid on their parent board.
+- `HoverPads`: Adds mounts that levitate a component above them.

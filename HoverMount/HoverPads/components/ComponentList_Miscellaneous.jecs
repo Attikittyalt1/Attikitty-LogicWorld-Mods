@@ -1,0 +1,23 @@
+HoverPad:
+    column: "Miscellaneous"
+    category: "Structural"
+    prefab:
+        blocks:
+            -   
+                position: (0, 0, 0)
+                scale: (2/3, 1/6, 2/3)
+
+            -   
+                position: (0, 0, 0)
+                scale: (0.4, 0.1, 0.4)
+                mesh: FlatQuad
+
+            -   
+                position: (0, 0, 0)
+                scale: (0.4, 0.1, 0.4)
+                mesh: FlatQuad
+
+    clientCode: HoverPads.Client.HoverPad
+    placingRules:
+        canBeFlipped: false
+        allowWorldRotation: false
