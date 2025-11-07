@@ -20,4 +20,4 @@ HoverPad:
     clientCode: HoverPads.Client.HoverPad
     placingRules:
         canBeFlipped: false
-        allowWorldRotation: false
+        allowFineRotation: false
