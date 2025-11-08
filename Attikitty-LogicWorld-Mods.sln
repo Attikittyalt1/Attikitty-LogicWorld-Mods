@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoardPegs", "BoardPegs\Boar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoverPads", "HoverPads\HoverPads.csproj", "{A0613E63-9C42-4C76-8131-6C09058A5FB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttikittySelectionTools", "AttikittySelectionTools\AttikittySelectionTools.csproj", "{0341B47C-46A5-4C63-A3B6-57AADC5CF3E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{A0613E63-9C42-4C76-8131-6C09058A5FB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0613E63-9C42-4C76-8131-6C09058A5FB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0613E63-9C42-4C76-8131-6C09058A5FB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0341B47C-46A5-4C63-A3B6-57AADC5CF3E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0341B47C-46A5-4C63-A3B6-57AADC5CF3E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0341B47C-46A5-4C63-A3B6-57AADC5CF3E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0341B47C-46A5-4C63-A3B6-57AADC5CF3E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

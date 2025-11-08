@@ -1,0 +1,31 @@
+MHG.SettingsMenu.Pages.Controls.Headings.AttikittySelectionTools: "Mod: Attikitty's Selection Tools"
+
+FancyInput.Trigger.AttikittySelectionTools.StoreAlternateSelection : "Store Alternate Selection"
+FancyInput.Trigger.AttikittySelectionTools.StoreAlternateSelection.Description : """
+    Sets your clipboard to the current selection
+    """
+    
+FancyInput.Trigger.AttikittySelectionTools.LoadAlternateSelection : "Load Alternate Selection"
+FancyInput.Trigger.AttikittySelectionTools.LoadAlternateSelection.Description : """
+    Sets your current selection to the clipboard.
+    """
+
+FancyInput.Trigger.AttikittySelectionTools.ClearAlternateSelection : "Clear Alternate Selection"
+FancyInput.Trigger.AttikittySelectionTools.ClearAlternateSelection.Description : """
+    ClearAlternateSelection
+    """
+
+FancyInput.Trigger.AttikittySelectionTools.SwapAlternateSelection : "Swap Alternate Selection"
+FancyInput.Trigger.AttikittySelectionTools.SwapAlternateSelection.Description : """
+    Swaps your current selection with the clipboard. Currently this only works if both contain at least one component.
+    """
+
+FancyInput.Trigger.AttikittySelectionTools.AddAlternateSelection : "Add Alternate Selection"
+FancyInput.Trigger.AttikittySelectionTools.AddAlternateSelection.Description : """
+    Adds your current selection to the clipboard without overwriting the current selection.
+    """
+
+FancyInput.Trigger.AttikittySelectionTools.RemoveAlternateSelection : "Remove Alternate Selection"
+FancyInput.Trigger.AttikittySelectionTools.RemoveAlternateSelection.Description : """
+    Removes your current selection from the clipboard without overwriting the remaining selection.
+    """

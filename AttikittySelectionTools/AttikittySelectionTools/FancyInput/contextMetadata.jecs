@@ -1,0 +1,10 @@
+AttikittySelectionTools.AttikittySelectionTools:
+    InjectTriggersInto:
+        - MHG.BuildActions
+    Triggers:
+        - AttikittySelectionTools.StoreAlternateSelection
+        - AttikittySelectionTools.LoadAlternateSelection
+        - AttikittySelectionTools.ClearAlternateSelection
+        - AttikittySelectionTools.SwapAlternateSelection
+        - AttikittySelectionTools.AddAlternateSelection
+        - AttikittySelectionTools.RemoveAlternateSelection
