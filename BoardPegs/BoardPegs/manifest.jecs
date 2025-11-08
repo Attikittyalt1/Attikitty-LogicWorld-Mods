@@ -3,3 +3,6 @@ Name: Board Pegs
 Author: Attikitty
 Version: 1.0.2
 Priority: 0
+
+Dependencies:
+    - EccsLogicWorldAPI
