@@ -4,11 +4,11 @@ using LogicWorld.Server.Circuitry;
 using System;
 using System.Collections.Generic;
 
-namespace BoardPegs.Logic.BoardPegHandling;
+namespace BoardPegs.LogicCode.BoardPegHandling;
 
 class LinkedRowWithManualLinking : ILinkedRow
 {
-    private readonly List<InputPeg> _pegs = [];
+    private readonly List<IInputPeg> _pegs = [];
 
     public void Uninitialize()
     {
@@ -34,7 +34,7 @@ class LinkedRowWithManualLinking : ILinkedRow
             peg.AddSecretLinkWith(_pegs[index - 1]);
         }
 
-        _pegs.Add((InputPeg)peg);
+        _pegs.Add(peg);
     }
 
     public void RemovePeg(IInputPeg peg)
@@ -44,7 +44,7 @@ class LinkedRowWithManualLinking : ILinkedRow
             throw new Exception("Tried to remove peg from HiddenPegData that is already empty");
         }
 
-        var index = _pegs.IndexOf((InputPeg)peg);
+        var index = _pegs.IndexOf(peg);
 
         if (index - 1 >= 0)
         {
@@ -61,7 +61,7 @@ class LinkedRowWithManualLinking : ILinkedRow
             _pegs[index - 1].AddSecretLinkWith(_pegs[index + 1]);
         }
 
-        _pegs.Remove((InputPeg)peg);
+        _pegs.Remove(peg);
     }
 
     public bool IsInitialized()

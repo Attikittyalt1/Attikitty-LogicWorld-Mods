@@ -5,7 +5,7 @@ using LogicAPI.Server.Components;
 using LogicWorld.Server.Circuitry;
 using System;
 
-namespace BoardPegs.Logic.BoardPegHandling;
+namespace BoardPegs.LogicCode.BoardPegHandling;
 
 class LinkedRowWithHiddenPeg : ILinkedRow
 {

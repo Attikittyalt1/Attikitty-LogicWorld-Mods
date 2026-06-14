@@ -1,8 +1,8 @@
-﻿using BoardPegs.Logic.BoardPegHandling;
+﻿using BoardPegs.LogicCode.BoardPegHandling;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BoardPegs.Logic;
+namespace BoardPegs.LogicCode;
 
 public class BoardPegSide : BoardPeg
 {

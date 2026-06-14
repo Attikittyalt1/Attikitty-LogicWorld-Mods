@@ -10,7 +10,7 @@ BoardPeg:
             -
                 length: 0.4
                 position: (0, 0, 0)
-    logicCode: BoardPegs.Logic.BoardPegSideOrTop
+    logicCode: BoardPegs.LogicCode.BoardPegSideOrTop
     placingRules:
         secondaryGridPositions:
             - (1/6, 1/6)
@@ -51,7 +51,7 @@ BoardPegWalled:
             -
                 length: 0.4
                 position: (0, 0, 0)
-    logicCode: BoardPegs.Logic.BoardPegWalled
+    logicCode: BoardPegs.LogicCode.BoardPegWalled
     placingRules:
         secondaryGridPositions:
             - (1/6, 1/6)

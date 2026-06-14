@@ -6,13 +6,13 @@ using LogicWorld.Server.Circuitry;
 using System;
 using System.Collections.Generic;
 
-namespace BoardPegs.Logic.BoardPegHandling;
+namespace BoardPegs.LogicCode.BoardPegHandling;
 
 class LinkedRowWithLonelies : ILinkedRow
 {
     private InputPeg _hiddenPeg;
     private int _count;
-    private readonly List<InputPeg> _lonelyPegs = [];
+    private readonly List<IInputPeg> _lonelyPegs = [];
 
     public required int MaxLonelies { get; init; }
 
@@ -41,7 +41,7 @@ class LinkedRowWithLonelies : ILinkedRow
         {
             var index = _count;
 
-            _lonelyPegs.Add((InputPeg)peg);
+            _lonelyPegs.Add(peg);
 
             if (index > 0)
             {
@@ -86,7 +86,7 @@ class LinkedRowWithLonelies : ILinkedRow
 
         if (_count < MaxLonelies)
         {
-            var index = _lonelyPegs.IndexOf((InputPeg)peg);
+            var index = _lonelyPegs.IndexOf(peg);
 
             if (index - 1 >= 0)
             {
@@ -102,7 +102,7 @@ class LinkedRowWithLonelies : ILinkedRow
             {
                 _lonelyPegs[index - 1].AddSecretLinkWith(_lonelyPegs[index + 1]);
             }
-            _lonelyPegs.Remove((InputPeg)peg);
+            _lonelyPegs.Remove(peg);
         }
         else
         {

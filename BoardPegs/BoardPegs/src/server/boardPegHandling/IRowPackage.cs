@@ -1,5 +1,5 @@
 ﻿
-namespace BoardPegs.Logic.BoardPegHandling;
+namespace BoardPegs.LogicCode.BoardPegHandling;
 
 public interface IRowPackage
 {

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BoardPegs.Logic.BoardPegHandling;
+namespace BoardPegs.LogicCode.BoardPegHandling;
 
 public class PackageManager1D : IPackageManager<Linkable>
 {

@@ -3,7 +3,7 @@ using LogicAPI.Server.Components;
 using System;
 
 
-namespace BoardPegs.Logic.BoardPegHandling;
+namespace BoardPegs.LogicCode.BoardPegHandling;
 
 public class Linkable : IEquatable<Linkable>, IComparable<Linkable>
 {

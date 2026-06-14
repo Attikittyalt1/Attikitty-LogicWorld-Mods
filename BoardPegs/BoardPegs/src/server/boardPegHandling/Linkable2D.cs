@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 
 
-namespace BoardPegs.Logic.BoardPegHandling;
+namespace BoardPegs.LogicCode.BoardPegHandling;
 
 public class Linkable2D : IEquatable<Linkable2D>, IComparable<Linkable2D>
 {

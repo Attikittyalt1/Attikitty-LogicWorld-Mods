@@ -6,7 +6,7 @@ using System.Linq;
 using BoardPegs.Server;
 using UnityEngine;
 
-namespace BoardPegs.Logic.BoardPegHandling;
+namespace BoardPegs.LogicCode.BoardPegHandling;
 
 class RowPackage : IRowPackage
 {

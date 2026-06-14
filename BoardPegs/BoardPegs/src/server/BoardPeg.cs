@@ -4,10 +4,10 @@ using LogicAPI.Server.Components;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using BoardPegs.Logic.BoardPegHandling;
+using BoardPegs.LogicCode.BoardPegHandling;
 using JimmysUnityUtilities;
 
-namespace BoardPegs.Logic;
+namespace BoardPegs.LogicCode;
 
 public abstract class BoardPeg : LogicComponent
 {
