@@ -32,7 +32,7 @@ FancyInput.Trigger.AttikittySelectionTools.ClearAlternateSelection.Description :
 
 FancyInput.Trigger.AttikittySelectionTools.SwapAlternateSelection : "Swap Alternate Selection"
 FancyInput.Trigger.AttikittySelectionTools.SwapAlternateSelection.Description : """
-    Swaps your current selection with the selection clipboard. Currently this only works if both contain at least one component.
+    Swaps your current selection with the selection clipboard.
     """
 
 FancyInput.Trigger.AttikittySelectionTools.AddAlternateSelection : "Add Alternate Selection"

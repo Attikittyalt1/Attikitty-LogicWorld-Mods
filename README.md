@@ -2,7 +2,7 @@
 
 In this repository you will find all mods created by @Attikitty for the game Logic World.
 
-**All mods in this repository are for LogicWorld version 0.92**
+**All mods in this repository are for the latest preview of LogicWorld** (Check the #news channel on the games Discord)
 
 ## How to install / use them?
 
@@ -20,6 +20,10 @@ Thanks to Ecconia and all the other modders for the help they gave in the procce
 And thanks to Jimmy and all the other devs for making this awesome game!
 
 ## List of mods:
+
+#### Client
+
+- `AttikittySelectionTools`: Adds a selection clipboard & history for greater selection management.
 
 #### Client & Server: (Installed on both sides)
 
