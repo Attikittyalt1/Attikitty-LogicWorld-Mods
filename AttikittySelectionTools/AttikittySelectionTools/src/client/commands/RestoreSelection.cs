@@ -9,11 +9,16 @@ public class RestoreSelection : Command
 {
     private readonly ComponentSelection _selection;
 
-    public override Command Inverse => new ClearSelection();
+    public override Command Inverse => new RestoreSelection(MultiSelector.GetCurrentSelection());
 
     public RestoreSelection(ComponentSelection Selection)
     {
-        _selection = Selection;
+        _selection = Selection?.Clone();
+    }
+
+    public RestoreSelection()
+    {
+        _selection = null;
     }
 
     public override void Trigger()
@@ -30,6 +35,6 @@ public class RestoreSelection : Command
 
     public override string ToString()
     {
-        return "Restore " + _selection.Count;
+        return "Restore " + (_selection?.Count ?? 0);
     }
 }

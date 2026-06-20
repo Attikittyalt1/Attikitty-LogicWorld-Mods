@@ -38,11 +38,16 @@ public class LoadAlternateSelection : BuildingOperation
 
         if (newSelection != null && SelectionUtil.CanSelectAny(newSelection))
         {
+            if (!wasEmpty)
+            {
+                MyClient.SelectionHistory.StartIgnoringIncomingCommands();
+            }
+
             MultiSelector.StartWithSelection(SelectionUtil.ValidateSelection(newSelection));
 
-            if (wasEmpty)
+            if (!wasEmpty)
             {
-                MyClient.SelectionHistory.AddCommand(new ClearSelection());
+                MyClient.SelectionHistory.StopIgnoringIncomingCommands();
             }
         }
     }
@@ -68,11 +73,16 @@ public class LoadAlternateSelection : BuildingOperation
 
         if (newSelection != null && SelectionUtil.CanSelectAny(newSelection))
         {
-            MultiSelector.StartWithSelection(SelectionUtil.ValidateSelection(newSelection));
-
-            if (wasEmpty)
+            if (!wasEmpty)
             {
-                MyClient.SelectionHistory.AddCommand(new ClearSelection());
+                MyClient.SelectionHistory.StartIgnoringIncomingCommands();
+            }
+
+            MultiSelector.StartWithSelection(SelectionUtil.ValidateSelection(newSelection));
+            
+            if (!wasEmpty)
+            {
+                MyClient.SelectionHistory.StopIgnoringIncomingCommands();
             }
         }
 

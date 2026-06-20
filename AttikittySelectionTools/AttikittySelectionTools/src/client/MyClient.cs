@@ -9,12 +9,13 @@ using LogicWorld;
 using LogicWorld.UI;
 using EccsLogicWorldAPI.Client.Hooks;
 using LogicSettings;
+using LogicWorld.Building.Overhaul;
 
 namespace AttikittySelectionTools.Client;
 
 public class MyClient : ClientMod
 {
-    public const bool DEBUG = true;
+    public const bool DEBUG = false;
 
     public static SelectionWorkbench SelectionClipboard;
     public static CommandManager SelectionHistory;
@@ -98,7 +99,7 @@ public class MyClient : ClientMod
 }
 
 [HarmonyPatch]
-class MultiSelectAddPatch
+class MultiSelectAddAddressPatch
 {
     [HarmonyPatch("MultiSelector", "AddToSelectionAndOutline")]
     [HarmonyPrefix]
@@ -109,7 +110,7 @@ class MultiSelectAddPatch
 }
 
 [HarmonyPatch]
-class MultiSelectRemovePatch
+class MultiSelectRemoveAddressPatch
 {
     [HarmonyPatch("MultiSelector", "RemoveFromSelectionAndRemoveOutline")]
     [HarmonyPrefix]
@@ -120,7 +121,7 @@ class MultiSelectRemovePatch
 }
 
 [HarmonyPatch]
-class MultiSelectExitPatch
+class MultiSelectOnExitPatch
 {
     [HarmonyPatch("MultiSelectState", "OnExit")]
     [HarmonyPrefix]
@@ -130,6 +131,28 @@ class MultiSelectExitPatch
         if (selection == null || selection.Count == 0) 
             return;
 
-        MyClient.SelectionHistory.AddCommand(new RestoreSelection(selection.Clone()));
+        MyClient.SelectionHistory.AddCommand(new RestoreSelection(selection));
+    }
+}
+
+[HarmonyPatch]
+class MultiSelectStartWithSelectionPatch
+{
+    [HarmonyPatch("MultiSelector", "StartWithSelection")]
+    [HarmonyPrefix]
+    static void Prefix(ComponentSelection selection)
+    {
+        MyClient.SelectionHistory.AddCommand(new RestoreSelection());
+    }
+}
+
+[HarmonyPatch]
+class MultiSelectStartSelectingWithPatch
+{
+    [HarmonyPatch("MultiSelector", "StartSelectingWith")]
+    [HarmonyPrefix]
+    static void Prefix(ComponentAddress firstComponentInSelection)
+    {
+        MyClient.SelectionHistory.AddCommand(new RemoveComponentFromSelection(firstComponentInSelection));
     }
 }

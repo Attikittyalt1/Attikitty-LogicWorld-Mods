@@ -2,6 +2,7 @@
 using LICC;
 using LogicWorld.UI;
 using System.Collections.Generic;
+using System;
 
 namespace AttikittySelectionTools.Client;
 
@@ -9,21 +10,15 @@ public class CommandManager
 {
     public int MaxCount { get; init; }
 
-    private enum CommandState
-    {
-        None,
-        Undo,
-        Redo
-    }
-
     private readonly List<Command> _undostack = [];
     private readonly List<Command> _redostack = [];
-    private CommandState _state = CommandState.None;
+
+    private int _ignoreLevel = 0;
 
 
     public void AddCommand(Command command)
     {
-        if (_state != CommandState.None)
+        if (_ignoreLevel > 0)
         {
             return;
         }
@@ -60,12 +55,11 @@ public class CommandManager
         _undostack.RemoveAt(_undostack.Count - 1);
         _redostack.Add(command.Inverse);
 
-        var previous_state = _state;
-        _state = CommandState.Undo;
+        StartIgnoringIncomingCommands();
 
         command.Trigger();
 
-        _state = previous_state;
+        StopIgnoringIncomingCommands();
 
         if (MyClient.DEBUG) PrintStacks();
     }
@@ -77,12 +71,11 @@ public class CommandManager
         _redostack.RemoveAt(_redostack.Count - 1);
         _undostack.Add(command.Inverse);
 
-        var previous_state = _state;
-        _state = CommandState.Undo;
+        StartIgnoringIncomingCommands();
 
         command.Trigger();
 
-        _state = previous_state;
+        StopIgnoringIncomingCommands();
 
         if (MyClient.DEBUG) PrintStacks();
     }
@@ -96,6 +89,21 @@ public class CommandManager
     {
         _undostack.Clear();
         _redostack.Clear();
+    }
+
+    public void StartIgnoringIncomingCommands()
+    {
+        _ignoreLevel++;
+    }
+
+    public void StopIgnoringIncomingCommands()
+    {
+        if (_ignoreLevel <= 0)
+        {
+            throw new InvalidOperationException("Already accepting incomming commands");
+        }
+
+        _ignoreLevel--;
     }
 
     public void PrintStacks()

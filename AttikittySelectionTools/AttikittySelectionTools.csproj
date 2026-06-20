@@ -163,8 +163,4 @@
     <Folder Include="AttikittySelectionTools\settings\" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="AttikittySelectionTools\src\client\commands\ClearSelection.cs" />
-  </ItemGroup>
-
 </Project>
