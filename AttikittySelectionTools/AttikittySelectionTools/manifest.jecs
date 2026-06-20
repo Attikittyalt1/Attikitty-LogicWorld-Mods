@@ -1,5 +1,9 @@
 ID: AttikittySelectionTools
 Name: Attikitty's Selection Tools
 Author: Attikitty
-Version: 1.0.0
+Version: 1.0.1
 Priority: 0
+
+Dependencies:
+    - EccsLogicWorldAPI
+    - HarmonyForLogicWorld

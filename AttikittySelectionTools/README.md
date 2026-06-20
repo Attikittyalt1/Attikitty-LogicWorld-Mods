@@ -19,3 +19,6 @@ Max selection history length can be adjusted in the Gameplay/Attikitty's Selecti
 ## Install / Dependencies:
 
 Just drop the `AttikittySelectionTools` folder into your `GameData` folder.
+
+For this mod to function, you will need two additional mods: `EccsLogicWorldAPI` & `HarmonyForLogicWorld`
+You can find them in [this mod collection](https://github.com/Ecconia/Ecconia-LogicWorld-Mods/tree/master) by @Ecconia.
