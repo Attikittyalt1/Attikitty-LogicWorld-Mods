@@ -1,10 +1,9 @@
-﻿using LogicAPI.Data;
+﻿using JimmysUnityUtilities;
 using LogicWorld.Building.Overhaul;
-using System;
 
 namespace AttikittySelectionTools.Client;
 
-public class SelectionManager
+public class SelectionWorkbench
 {
     private ComponentSelection _selection;
 
@@ -30,7 +29,7 @@ public class SelectionManager
 
     public void SetSelection(ComponentSelection currentSelection)
     {
-        _selection = currentSelection.Clone();
+        _selection = currentSelection?.Clone();
     }
 
     public void AddSelection(ComponentSelection currentSelection)
@@ -51,7 +50,7 @@ public class SelectionManager
     }
     public void RemoveSelection(ComponentSelection currentSelection)
     {
-        if (!HasSelection())
+        if (_selection == null)
         {
             return;
         }
@@ -67,7 +66,7 @@ public class SelectionManager
 
     public bool ContainsAnyAddressFromSelection(ComponentSelection currentSelection)
     {
-        if (!HasSelection())
+        if (_selection == null)
         {
             return false;
         }
@@ -85,19 +84,16 @@ public class SelectionManager
 
     public bool ContainsEveryAddressFromSelection(ComponentSelection currentSelection)
     {
-        if (!HasSelection())
+        if (_selection == null)
         {
             return false;
         }
 
-        foreach (var address in currentSelection)
-        {
-            if (!_selection.Contains(address))
-            {
-                return false;
-            }
-        }
+        return _selection.ContainsAll(currentSelection);
+    }
 
-        return true;
+    public bool HasExactSelection(ComponentSelection selection)
+    {
+        return _selection.HasTheSameContentsAs_IgnoringOrder(selection);
     }
 }

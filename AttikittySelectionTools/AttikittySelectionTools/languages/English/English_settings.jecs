@@ -1,0 +1,6 @@
+MHG.SettingsMenu.Pages.Gameplay.Headings.AttikittySelectionTools: "AttikittySelectionTools (Mod)"
+
+AttikittySelectionTools.MaxHistoryLength : "Max History Length"
+AttikittySelectionTools.MaxHistoryLength.Description : """
+    Maximum length of stored selection history before oldest entries get overriden.
+    """

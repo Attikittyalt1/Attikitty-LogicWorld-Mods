@@ -1,3 +1,12 @@
+AttikittySelectionTools.UndoSelection:
+    Heading: "AttikittySelectionTools"
+
+AttikittySelectionTools.RedoSelection:
+    Heading: "AttikittySelectionTools"
+    
+AttikittySelectionTools.ClearSelectionHistory:
+    Heading: "AttikittySelectionTools"
+
 AttikittySelectionTools.StoreAlternateSelection:
     Heading: "AttikittySelectionTools"
 

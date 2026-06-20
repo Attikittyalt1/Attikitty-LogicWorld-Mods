@@ -2,6 +2,8 @@ AttikittySelectionTools.AttikittySelectionTools:
     InjectTriggersInto:
         - MHG.BuildActions
     Triggers:
+        - AttikittySelectionTools.UndoSelection
+        - AttikittySelectionTools.RedoSelection
         - AttikittySelectionTools.StoreAlternateSelection
         - AttikittySelectionTools.LoadAlternateSelection
         - AttikittySelectionTools.ClearAlternateSelection

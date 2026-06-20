@@ -1,5 +1,20 @@
 MHG.SettingsMenu.Pages.Controls.Headings.AttikittySelectionTools: "Mod: Attikitty's Selection Tools"
 
+FancyInput.Trigger.AttikittySelectionTools.UndoSelection : "Undo Selection"
+FancyInput.Trigger.AttikittySelectionTools.UndoSelection.Description : """
+    Undos the latest change to your current selection.
+    """
+    
+FancyInput.Trigger.AttikittySelectionTools.RedoSelection : "Redo Selection"
+FancyInput.Trigger.AttikittySelectionTools.RedoSelection.Description : """
+    Redos the latest change to your current selection.
+    """
+    
+FancyInput.Trigger.AttikittySelectionTools.ClearSelectionHistory : "Clear Selection History"
+FancyInput.Trigger.AttikittySelectionTools.ClearSelectionHistory.Description : """
+    Clears your selection history.
+    """
+    
 FancyInput.Trigger.AttikittySelectionTools.StoreAlternateSelection : "Store Alternate Selection"
 FancyInput.Trigger.AttikittySelectionTools.StoreAlternateSelection.Description : """
     Sets your selection clipboard to the current selection

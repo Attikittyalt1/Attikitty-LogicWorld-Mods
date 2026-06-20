@@ -1,0 +1,6 @@
+AttikittySelectionTools.MaxHistoryLength:
+    Page: Gameplay
+    Heading: AttikittySelectionTools
+    Min: 1
+    Max: 30
+    
