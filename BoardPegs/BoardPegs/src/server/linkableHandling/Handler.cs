@@ -2,23 +2,24 @@
 using System;
 using System.Collections.Generic;
 
-namespace BoardPegs.LogicCode.BoardPegHandling;
+namespace BoardPegs.LogicCode.LinkableHandling;
 
 public class Handler<T>
+    where T : ILinkable<T>
 {
-    public T Linkable { get; init; }
+    public LinkableContainer<T> Linkable { get; init; }
     public Func<ComponentAddress> GetAddress { get; init; }
 
     private ComponentAddress? _trackerKey;
     private bool _isTracked = false;
-    private List<IPackageManager<T>> _currentManagers = [];
+    private readonly List<PackageManager<T>> _currentManagers = [];
 
     public bool IsBeingTracked()
     {
         return _isTracked;
     }
 
-    public void StartTracking(IEnumerable<IPackageManager<T>> packageManagers)
+    public void StartTracking(IEnumerable<PackageManager<T>> packageManagers)
     {
         if (_isTracked)
         {
@@ -29,7 +30,7 @@ public class Handler<T>
 
         foreach (var manager in packageManagers)
         {
-            manager.StartTrackingBoardPeg(Linkable, _trackerKey.Value);
+            manager.StartTrackingLinkable(Linkable, _trackerKey.Value);
             _currentManagers.Add(manager);
         }
 
@@ -45,7 +46,7 @@ public class Handler<T>
 
         foreach (var manager in _currentManagers)
         {
-            manager.StopTrackingBoardPeg(Linkable, _trackerKey.Value);
+            manager.StopTrackingLinkable(Linkable, _trackerKey.Value);
         }
         _currentManagers.Clear();
 
@@ -54,7 +55,7 @@ public class Handler<T>
         _isTracked = false;
     }
 
-    public bool TryStartTracking(IEnumerable<IPackageManager<T>> packageManagers)
+    public bool TryStartTracking(IEnumerable<PackageManager<T>> packageManagers)
     {
         if (!IsBeingTracked())
         {

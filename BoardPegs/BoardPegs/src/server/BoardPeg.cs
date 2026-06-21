@@ -4,23 +4,23 @@ using LogicAPI.Server.Components;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using BoardPegs.LogicCode.BoardPegHandling;
+using BoardPegs.LogicCode.LinkableHandling;
 using JimmysUnityUtilities;
 
 namespace BoardPegs.LogicCode;
 
 public abstract class BoardPeg : LogicComponent
 {
-    public readonly static PackageManager2D ManagerAtBoardHeight = new();
-    public readonly static PackageManager2D ManagerAboveBoard = new();
-    public readonly static PackageManager2D ManagerBelowBoard = new();
+    public readonly static PackageManager2D<LinkablePeg> ManagerAtBoardHeight = new();
+    public readonly static PackageManager2D<LinkablePeg> ManagerAboveBoard = new();
+    public readonly static PackageManager2D<LinkablePeg> ManagerBelowBoard = new();
 
     private readonly static IEnumerable<string> ID_CIRCUITBOARDS = ["MHG.CircuitBoard"];
 
     protected const float Epsilon = 0.01f;
 
     private Vector3 previousLocation;
-    private Handler<Linkable2D> _handler;
+    private Handler2D<LinkablePeg> _handler;
 
     private ComponentAddress GetLinkingAddress()
     {
@@ -32,7 +32,7 @@ public abstract class BoardPeg : LogicComponent
         return !Component.WorldPosition.IsPrettyCloseTo(previousLocation);
     }
 
-    protected virtual List<PackageManager2D> FindManagers()
+    protected virtual List<PackageManager2D<LinkablePeg>> FindManagers()
     {
         return [ManagerAtBoardHeight];
     }
@@ -42,9 +42,7 @@ public abstract class BoardPeg : LogicComponent
         return new Vector2Int((Component.LocalPositionFixed.x - 50) / 100, (Component.LocalPositionFixed.z - 50) / 100);
     }
 
-    protected abstract bool ShouldBeLinkedHorizontally();
-
-    protected abstract bool ShouldBeLinkedVertically();
+    protected abstract (bool x, bool y) GetAxisStatus();
      
     public bool IsOnValidBoard()
     {
@@ -60,17 +58,16 @@ public abstract class BoardPeg : LogicComponent
 
     protected override void Initialize()
     {
-        _handler = new Handler<Linkable2D>
+        _handler = new Handler2D<LinkablePeg>
         {
             GetAddress = () => GetLinkingAddress(),
-            Linkable = new Linkable2D
+            Linkable = new LinkableContainer2D<LinkablePeg>
             {
                 Address = Address,
-                LinkablePeg = Inputs[0],
+                Linkable = new LinkablePeg(Inputs[0]),
                 GetLinkingPosition = GetLinkingPosition,
+                GetAxisStatus = GetAxisStatus,
                 HasBeenMoved = HasBeenMoved,
-                ShouldBeLinkedHorizontally = ShouldBeLinkedHorizontally,
-                ShouldBeLinkedVertically = ShouldBeLinkedVertically
             }
         };
 

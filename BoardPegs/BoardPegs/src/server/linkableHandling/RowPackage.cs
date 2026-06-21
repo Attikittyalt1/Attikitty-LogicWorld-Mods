@@ -6,19 +6,20 @@ using System.Linq;
 using BoardPegs.Server;
 using UnityEngine;
 
-namespace BoardPegs.LogicCode.BoardPegHandling;
+namespace BoardPegs.LogicCode.LinkableHandling;
 
-class RowPackage : IRowPackage
+class RowPackage<T>
+    where T : ILinkable<T>
 {
-    private Dictionary<Linkable, int> LinkablePositions = [];
+    private Dictionary<LinkableContainer<T>, int> LinkablePositions = [];
 
-    private Dictionary<int, ILinkedRow> LinkedRows = [];
+    private Dictionary<int, LinkedRow<T>> LinkedRows = [];
 
     public bool IsEmpty() => LinkablePositions.IsEmpty();
 
-    public bool HasLinkable(Linkable linkable)
+    public bool HasLinkable(LinkableContainer<T> container)
     {
-        return LinkablePositions.ContainsKey(linkable);
+        return LinkablePositions.ContainsKey(container);
     }
 
     // use UninitializeAndClear if it is possible for the instance to still be accessed afterwords, though it probably shouldn't be
@@ -52,32 +53,32 @@ class RowPackage : IRowPackage
         LinkedRows.Clear();
     }
 
-    public void AddLinkable(Linkable linkable)
+    public void AddLinkable(LinkableContainer<T> container)
     {
         CheckForPositionChangeFromBoard();
 
-        if (LinkablePositions.ContainsKey(linkable))
+        if (LinkablePositions.ContainsKey(container))
         {
             throw new Exception("Tried to add linkable to package that already contains it");
         }
 
-        var position = linkable.GetLinkingPosition();
+        var position = container.GetLinkingPosition();
 
-        LinkAtPosition(linkable, position);
+        LinkAtPosition(container, position);
 
-        LinkablePositions.Add(linkable, position);
+        LinkablePositions.Add(container, position);
     }
 
-    public void RemoveLinkable(Linkable linkable)
+    public void RemoveLinkable(LinkableContainer<T> container)
     {
-        if (!LinkablePositions.TryGetValue(linkable, out var position))
+        if (!LinkablePositions.TryGetValue(container, out var position))
         {
             throw new Exception("Tried to remove linkable from package that does not contain it");
         }
 
-        UnlinkAtPosition(linkable, position);
+        UnlinkAtPosition(container, position);
 
-        LinkablePositions.Remove(linkable);
+        LinkablePositions.Remove(container);
     }
 
     private void CheckForPositionChangeFromBoard()
@@ -102,11 +103,11 @@ class RowPackage : IRowPackage
     {
         // this function makes the assumption that if a peg's global position has not changed, then any local position changes must be due to a board resizing
 
-        foreach (var (linkable, oldPosition) in LinkablePositions)
+        foreach (var (container, oldPosition) in LinkablePositions)
         {
-            var change = linkable.GetLinkingPosition() - oldPosition;
+            var change = container.GetLinkingPosition() - oldPosition;
 
-            if (!linkable.HasBeenMoved() && change != 0)
+            if (!container.HasBeenMoved() && change != 0)
             {
                 return change;
             }
@@ -115,23 +116,23 @@ class RowPackage : IRowPackage
         return 0;
     }
 
-    private void LinkAtPosition(Linkable linkable, int position)
+    private void LinkAtPosition(LinkableContainer<T> container, int position)
     {
         if (MyServer.DEBUG) LConsole.WriteLine("started to link at position: {0}", position);
 
         if (!LinkedRows.TryGetValue(position, out var linkedRow))
         {
-            linkedRow = new LinkedRowWithManualLinking()
+            linkedRow = new LinkedRow<T>()
             {
                 //MaxLonelies = 2
             };
             LinkedRows.Add(position, linkedRow);
         }
 
-        linkedRow.AddPeg(linkable.LinkablePeg);
+        linkedRow.AddLinkable(container.Linkable);
     }
 
-    private void UnlinkAtPosition(Linkable linkable, int position)
+    private void UnlinkAtPosition(LinkableContainer<T> container, int position)
     {
         if (MyServer.DEBUG) LConsole.WriteLine("started to unlink at position: {0}", position);
 
@@ -140,11 +141,31 @@ class RowPackage : IRowPackage
             throw new Exception("Linked Row could not be found in package at position " + position);
         }
 
-        linkedRow.RemovePeg(linkable.LinkablePeg);
+        linkedRow.RemoveLinkable(container.Linkable);
 
         if (linkedRow.IsEmpty())
         {
             LinkedRows.Remove(position);
         }
+    }
+
+    public bool TryAddLinkable(LinkableContainer<T> container)
+    {
+        if (!HasLinkable(container))
+        {
+            AddLinkable(container);
+        }
+
+        return false;
+    }
+
+    public bool TryRemoveLinkable(LinkableContainer<T> container)
+    {
+        if (HasLinkable(container))
+        {
+            RemoveLinkable(container);
+        }
+
+        return false;
     }
 }
