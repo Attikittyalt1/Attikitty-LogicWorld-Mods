@@ -6,6 +6,7 @@ using LogicAPI.Data;
 using LogicAPI.Server;
 using LogicAPI.Server.Components;
 using LogicAPI.Services;
+using LogicAPI.WorldDataMutations;
 using LogicWorld.Server;
 using LogicWorld.Server;
 using LogicWorld.Server.Circuitry;
@@ -20,6 +21,11 @@ namespace MorePegs.Server;
 
 public interface ILogicComponentHooks
 {
+    public virtual void OnParentRepositioned()
+    {
+
+    }
+
     public virtual void OnComponentPegCountUpdated()
     {
         
@@ -40,5 +46,22 @@ public interface ILogicComponentHooks
         eventInfo.AddEventHandler(Program.Get<IWorldDataMutator>(), handler);
 
         LConsole.WriteLine("LC hooks initialized");
+    }
+}
+
+
+[HarmonyPatch]
+class MultiSelectRemoveAddressPatch
+{
+    [HarmonyPatch("ServerWorldDataMutator", "RepositionComponent")]
+    [HarmonyPostfix]
+    static void Postfix(WorldMutation_RepositionComponent mutation)
+    {
+        var parent = mutation.AddressOfTargetComponent.GetComponent();
+
+        foreach (var child in parent.EnumerateChildren())
+        {
+            (child.GetLogicComponent() as ILogicComponentHooks)?.OnParentRepositioned();
+        }
     }
 }

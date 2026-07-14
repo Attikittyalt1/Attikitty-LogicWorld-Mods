@@ -8,7 +8,6 @@ namespace MorePegs.LogicCode.LinkableHandling;
 public class LinkableContainer : IEquatable<LinkableContainer>, IComparable<LinkableContainer>
 {
     public required Func<int> GetLinkingPosition { get; init; }
-    public required Func<bool> HasBeenMoved { get; init; }
     public required ILinkable Linkable { get; init; }
     public required ComponentAddress Address { get; init; }
 

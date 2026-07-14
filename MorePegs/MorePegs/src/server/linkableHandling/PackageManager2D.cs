@@ -51,4 +51,15 @@ public class PackageManager2D
             PackagesByAddress.Remove(address);
         }
     }
+
+    public void UpdatePositions(ComponentAddress address)
+    {
+        if (!PackagesByAddress.TryGetValue(address, out var packages))
+        {
+            throw new Exception("Failed to find Package at provided address");
+        }
+
+        packages.x.UpdatePositions();
+        packages.y.UpdatePositions();
+    }
 }

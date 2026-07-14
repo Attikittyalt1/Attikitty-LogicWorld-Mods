@@ -10,6 +10,7 @@ using LogicWorld.Server.Circuitry;
 using MorePegs.Shared;
 using LogicWorld.SharedCode.Components;
 using LICC;
+using SkysGeneralLib.Server.TypeExtensions;
 
 namespace MorePegs.LogicCode;
 
@@ -18,8 +19,6 @@ public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
     public readonly static PackageManager2D ManagerAtBoardHeight = new();
     public readonly static PackageManager2D ManagerAboveBoard = new();
     public readonly static PackageManager2D ManagerBelowBoard = new();
-
-    private readonly static IEnumerable<string> ID_CIRCUITBOARDS = ["MHG.CircuitBoard"];
 
     protected const float Epsilon = 0.01f;
 
@@ -52,14 +51,9 @@ public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
      
     public bool IsOnValidBoard()
     {
-        var parent = GetParentComponent();
+        var parent = Component.Parent.GetComponent();
 
-        return parent != null && IsCircuitBoard(parent.Data.Type);
-    }
-
-    public bool IsAlignedToBoard()
-    {
-        return true; // throw new NotImplementedException();
+        return parent != null;
     }
 
     protected override void Initialize()
@@ -73,7 +67,6 @@ public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
                 Linkable = new LinkableMultiPeg(Inputs),
                 GetLinkingPosition = GetLinkingPosition,
                 GetAxisStatus = GetAxisStatus,
-                HasBeenMoved = HasBeenMoved,
             }
         };
 
@@ -92,7 +85,7 @@ public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
             _handler.StopTracking();
         }
 
-        if (IsOnValidBoard() && IsAlignedToBoard())
+        if (IsOnValidBoard())
         {
             _handler.StartTracking(FindManagers());
         }
@@ -100,10 +93,16 @@ public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
         previousLocation = Component.WorldPosition;
     }
 
+    public void OnParentRepositioned()
+    {
+        if (_handler.IsBeingTracked())
+        {
+            _handler.UpdatePositions();
+        }
+    }
+
     public void OnComponentPegCountUpdated()
     {
-        LConsole.WriteLine("updated");
-
         _handler.StopTracking();
 
         _handler = new Handler2D
@@ -115,26 +114,15 @@ public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
                 Linkable = new LinkableMultiPeg(Inputs),
                 GetLinkingPosition = GetLinkingPosition,
                 GetAxisStatus = GetAxisStatus,
-                HasBeenMoved = HasBeenMoved,
             }
         };
 
-        if (IsOnValidBoard() && IsAlignedToBoard())
+        if (IsOnValidBoard())
         {
             _handler.StartTracking(FindManagers());
         }
 
         previousLocation = Component.WorldPosition;
-    }
-
-    private IComponentInWorld GetParentComponent()
-    {
-        return MyServer.WorldData.Lookup(Component.Parent);
-    }
-
-    private static bool IsCircuitBoard(ComponentType type)
-    {
-        return ID_CIRCUITBOARDS.Any(id => type.NumericID == MyServer.ComponentTypesManager.GetNumericID(id));
     }
 
     /*protected override void SetDataDefaultValues()

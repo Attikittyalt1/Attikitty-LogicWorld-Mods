@@ -53,4 +53,17 @@ public class Handler
 
         _isTracked = false;
     }
+
+    public void UpdatePositions()
+    {
+        if (!_isTracked)
+        {
+            throw new Exception("Tried to update positions for managers of link that is not being tracked");
+        }
+
+        foreach(var manager in _currentManagers)
+        {
+            manager.UpdatePositions(_trackerKey.Value);
+        }
+    }
 }

@@ -1,9 +1,11 @@
 ﻿using JimmysUnityUtilities;
 using LICC;
+using MorePegs.Server;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using MorePegs.Server;
+using System.Net;
 using UnityEngine;
 
 namespace MorePegs.LogicCode.LinkableHandling;
@@ -54,8 +56,6 @@ class RowPackage
 
     public void AddLinkable(LinkableContainer container)
     {
-        CheckForPositionChangeFromBoard();
-
         if (LinkablePositions.ContainsKey(container))
         {
             throw new Exception("Tried to add linkable to package that already contains it");
@@ -80,39 +80,36 @@ class RowPackage
         LinkablePositions.Remove(container);
     }
 
-    private void CheckForPositionChangeFromBoard()
+    public void UpdatePositions()
     {
         int positionChange = GetPositionChangeFromBoard();
         if (positionChange == 0) return;
 
-        // i should really use an immutable approach. maybe just a foreach loop would better but this just looks so nice
-        LinkablePositions = LinkablePositions.ToDictionary(
-            entry => entry.Key,
-            entry => entry.Value + positionChange
-        );
-
-        // same thing as before
-        LinkedRows = LinkedRows.ToDictionary(
-            entry => entry.Key + positionChange,
-            entry => entry.Value
-        );
+        ChangePositionsInUnision(positionChange);
     }
 
     private int GetPositionChangeFromBoard()
     {
-        // this function makes the assumption that if a peg's global position has not changed, then any local position changes must be due to a board resizing
+        var (container, oldPosition) = LinkablePositions.First();
 
-        foreach (var (container, oldPosition) in LinkablePositions)
-        {
-            var change = container.GetLinkingPosition() - oldPosition;
+        return container.GetLinkingPosition() - oldPosition;
+    }
 
-            if (!container.HasBeenMoved() && change != 0)
-            {
-                return change;
-            }
-        }
+    private void ChangePositionsInUnision(int deltaPos)
+    {
+        if (MyServer.DEBUG) LConsole.WriteLine("changing positions with delta: " + deltaPos);
 
-        return 0;
+        // i should really use an immutable approach. maybe just a foreach loop would better but this just looks so nice
+        LinkablePositions = LinkablePositions.ToDictionary(
+            entry => entry.Key,
+            entry => entry.Value + deltaPos
+        );
+
+        // same thing as before
+        LinkedRows = LinkedRows.ToDictionary(
+            entry => entry.Key + deltaPos,
+            entry => entry.Value
+        );
     }
 
     private void LinkAtPosition(LinkableContainer container, int position)

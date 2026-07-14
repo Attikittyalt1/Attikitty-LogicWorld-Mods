@@ -9,6 +9,8 @@ using LogicWorld.SharedCode.Components;
 using System;
 using EccsLogicWorldAPI.Shared.AccessHelper;
 using LogicAPI.Data;
+using HarmonyLib;
+using LogicAPI.WorldDataMutations;
 
 namespace MorePegs.Server;
 
@@ -16,15 +18,10 @@ public class MyServer : ServerMod
 {
     public const bool DEBUG = false;
 
-    public static IWorldData WorldData { get; private set; }
-    public static ComponentTypesManager ComponentTypesManager { get; private set; }
-
     protected override void Initialize()
     {
-        WorldData = ServiceGetter.getService<IWorldData>();
-        ComponentTypesManager = ServiceGetter.getService<ComponentTypesManager>();
-
-        VirtualInputPegPool.ensureInitialized();
+        var harmony = new Harmony("AttikittySelectionToolsClient");
+        harmony.PatchAll();
 
         ILogicComponentHooks.Init();
     }

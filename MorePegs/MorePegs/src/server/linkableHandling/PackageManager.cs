@@ -32,4 +32,14 @@ public class PackageManager
             PackagesByAddress.Remove(address);
         }
     }
+
+    public void UpdatePositions(ComponentAddress address)
+    {
+        if (!PackagesByAddress.TryGetValue(address, out var package))
+        {
+            throw new Exception("Failed to find Package at provided address");
+        }
+
+        package.UpdatePositions();
+    }
 }

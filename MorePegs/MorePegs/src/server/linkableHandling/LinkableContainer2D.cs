@@ -10,20 +10,17 @@ public class LinkableContainer2D : IEquatable<LinkableContainer2D>, IComparable<
 {
     public required Func<Vector2Int> GetLinkingPosition { get; init; }
     public required Func<(bool x, bool y)> GetAxisStatus { get; init; }
-    public required Func<bool> HasBeenMoved { get; init; }
     public required ILinkable Linkable { get; init; }
     public required ComponentAddress Address { get; init; }
 
     public (LinkableContainer x, LinkableContainer y) To1DContainers() => (new LinkableContainer
     {
         GetLinkingPosition = () => GetLinkingPosition().x,
-        HasBeenMoved = HasBeenMoved,
         Linkable = Linkable,
         Address = Address,
     }, new LinkableContainer
     {
         GetLinkingPosition = () => GetLinkingPosition().y,
-        HasBeenMoved = HasBeenMoved,
         Linkable = Linkable,
         Address = Address,
     });

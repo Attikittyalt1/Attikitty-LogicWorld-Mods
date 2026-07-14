@@ -67,8 +67,6 @@ public class LinkableMultiPeg : ILinkable
 
     private void Link(LinkableMultiPeg linkable)
     {
-        LConsole.WriteLine(String.Format("linking with count: {0}, {1}", InputPegs.Count, linkable.InputPegs.Count));
-
         for (int i = 0; i < Math.Min(InputPegs.Count, linkable.InputPegs.Count); i++)
         {
             InputPegs[i].AddSecretLinkWith(linkable.InputPegs[i]);
@@ -77,8 +75,6 @@ public class LinkableMultiPeg : ILinkable
 
     private void Unlink(LinkableMultiPeg linkable)
     {
-        LConsole.WriteLine(String.Format("unlinking with count: {0}, {1}", InputPegs.Count, linkable.InputPegs.Count));
-
         for (int i = 0; i < Math.Min(InputPegs.Count, linkable.InputPegs.Count); i++)
         {
             InputPegs[i].RemoveSecretLinkWith(linkable.InputPegs[i]);
