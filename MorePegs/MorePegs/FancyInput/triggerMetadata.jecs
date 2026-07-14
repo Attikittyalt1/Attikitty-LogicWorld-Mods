@@ -1,0 +1,14 @@
+MorePegs.ToggleAxis:
+    Heading: "MorePegs"
+
+MorePegs.IncrementHeight:
+    Heading: "MorePegs"
+    
+MorePegs.DecrementHeight:
+    Heading: "MorePegs"
+    
+MorePegs.DoubleHeight:
+    Heading: "MorePegs"
+
+MorePegs.HalveHeight:
+    Heading: "MorePegs"

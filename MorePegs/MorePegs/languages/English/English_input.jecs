@@ -1,0 +1,6 @@
+MHG.SettingsMenu.Pages.Controls.Headings.MorePegs: "Mod: More Pegs"
+
+FancyInput.Trigger.MorePegs.ToggleAxis : "Toggle Axis"
+FancyInput.Trigger.MorePegs.ToggleAxis.Description : """
+    Toggles board peg connection on viewed axis.
+    """
