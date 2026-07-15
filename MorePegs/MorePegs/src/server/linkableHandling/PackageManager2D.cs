@@ -1,5 +1,4 @@
-﻿using LICC;
-using LogicAPI.Data;
+﻿using LogicAPI.Data;
 using System;
 using System.Collections.Generic;
 

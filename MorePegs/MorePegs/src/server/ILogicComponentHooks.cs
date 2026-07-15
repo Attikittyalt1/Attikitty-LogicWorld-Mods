@@ -1,21 +1,11 @@
-﻿using EccsLogicWorldAPI.Server;
-using EccsLogicWorldAPI.Shared.AccessHelper;
-using HarmonyLib;
+﻿using HarmonyLib;
 using LICC;
 using LogicAPI.Data;
-using LogicAPI.Server;
-using LogicAPI.Server.Components;
 using LogicAPI.Services;
 using LogicAPI.WorldDataMutations;
 using LogicWorld.Server;
-using LogicWorld.Server;
-using LogicWorld.Server.Circuitry;
-using LogicWorld.Server.Managers;
-using LogicWorld.Server.Modules;
-using LogicWorld.SharedCode.Components;
 using SkysGeneralLib.Server.TypeExtensions;
 using System;
-using System.Reflection;
 
 namespace MorePegs.Server;
 
@@ -44,8 +34,6 @@ public interface ILogicComponentHooks
         var handler = Delegate.CreateDelegate(eventInfo.EventHandlerType, null, methodInfo);
         //var handler = AccessTools.MethodDelegate<Delegate>(methodInfo);
         eventInfo.AddEventHandler(Program.Get<IWorldDataMutator>(), handler);
-
-        LConsole.WriteLine("LC hooks initialized");
     }
 }
 

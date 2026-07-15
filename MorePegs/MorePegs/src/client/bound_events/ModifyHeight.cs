@@ -1,12 +1,9 @@
-﻿using FancyInput;
-using JimmysUnityUtilities;
-using LogicAPI.Data;
-using LogicAPI.Data.BuildingRequests;
+﻿using LogicAPI.Data.BuildingRequests;
 using LogicWorld.Building.Overhaul;
 using LogicWorld.BuildingManagement;
-using LogicWorld.Interfaces;
-using System.Linq;
+using SkysGeneralLib.Client.TypeExtensions;
 using System;
+using System.Linq;
 
 namespace MorePegs.Client.BoundEvents;
 
@@ -19,22 +16,29 @@ public abstract class ModifyHeight : BuildingOperation
 
     public override bool CanOperateOn(ComponentSelection selection)
     {
-        return !selection.ComponentsInSelection.Any(address =>
-            Instances.MainWorld.ComponentTypes.GetComponentInfo(Instances.MainWorld.Data.Lookup(address).Data.Type).PrefabGeneratorType != typeof(MultiPegPrefabGenerator)
-        );
+        if (!selection.ComponentsInSelection.Any(address =>
+            address.GetClientCode() is BoardPeg component &&
+            Math.Clamp(GetNewInputCount(component.InputCount), MinHeight, MaxHeight) != component.InputCount
+        ))
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public override void BeginOperationOn(ComponentSelection selection)
     {
         foreach (var address in selection.ComponentsInSelection)
         {
-            var component = Instances.MainWorld.Data.Lookup(address);
-
-            BuildRequestManager.SendBuildRequest(new BuildRequest_ChangeDynamicComponentPegCounts(
+            if (address.GetClientCode() is BoardPeg component)
+            {
+                BuildRequestManager.SendBuildRequest(new BuildRequest_ChangeDynamicComponentPegCounts(
                 address,
-                Math.Clamp(GetNewInputCount(component.Data.InputCount), MinHeight, MaxHeight),
+                Math.Clamp(GetNewInputCount(component.InputCount), MinHeight, MaxHeight),
                 0
             ));
+            }
         }
     }
 }

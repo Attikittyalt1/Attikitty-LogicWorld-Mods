@@ -3,5 +3,6 @@ namespace MorePegs.Shared;
 
 public interface IBoardPegData
 {
-    (bool x, bool y) ConnectedAxis { get; set; }
+    bool ConnectedAxisX { get; set; }
+    bool ConnectedAxisZ { get; set; }
 }

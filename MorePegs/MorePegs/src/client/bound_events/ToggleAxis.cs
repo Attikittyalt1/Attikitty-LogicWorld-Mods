@@ -1,16 +1,13 @@
 ﻿using FancyInput;
 using JimmysUnityUtilities;
-using LogicAPI.Data;
-using LogicAPI.Data.BuildingRequests;
+using LICC;
 using LogicWorld.Building.Overhaul;
-using LogicWorld.BuildingManagement;
-using LogicWorld.Interfaces;
-using LogicWorld.UI;
+using LogicWorld.Physics;
+using LogicWorld.Players;
 using MorePegs.Client.Inputs;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+using SkysGeneralLib.Client.TypeExtensions;
 using System;
+using System.Linq;
 
 namespace MorePegs.Client.BoundEvents;
 
@@ -20,19 +17,37 @@ public class ToggleAxis : BuildingOperation
 
     public override bool CanOperateOn(ComponentSelection selection)
     {
-        ComponentType BoardPegType = Instances.MainWorld.ComponentTypes.GetComponentType("MorePegs.BoardPeg");
-        return !selection.ComponentsInSelection.Any(address => Instances.MainWorld.Data.Lookup(address).Data.Type != BoardPegType);
+        if (selection.ComponentsInSelection.Any(address => address.GetClientCode() is not BoardPeg))
+        {
+            return false;
+        }
+
+        var hit = PlayerCaster.CameraCast(Masks.Peg);
+
+        if (!hit.HitComponent || hit.cAddress.GetClientCode() is not BoardPeg)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public override void BeginOperationOn(ComponentSelection selection)
     {
-        throw new NotImplementedException();
+        var hit = PlayerCaster.CameraCast(Masks.Peg);
+        var hitComponent = hit.cAddress.GetComponent();
+        var point = hitComponent.WorldRotation.Inverse() * hit.RelativePoint;
+
+        bool toggleX = Math.Abs(point.x) > Math.Abs(point.z);
+        bool toggleZ = Math.Abs(point.x) < Math.Abs(point.z);
 
         foreach (var address in selection.ComponentsInSelection)
         {
-            var component = Instances.MainWorld.Data.Lookup(address);
-
-            
+            if (address.GetClientCode() is BoardPeg component)
+            {
+                component.Data.ConnectedAxisX ^= toggleX;
+                component.Data.ConnectedAxisZ ^= toggleZ;
+            }
         }
     }
 }

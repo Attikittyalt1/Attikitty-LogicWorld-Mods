@@ -1,20 +1,16 @@
-﻿using MorePegs.Server;
+﻿using JimmysUnityUtilities;
 using LogicAPI.Data;
-using LogicAPI.Server.Components;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using MorePegs.LogicCode.LinkableHandling;
-using JimmysUnityUtilities;
 using LogicWorld.Server.Circuitry;
+using MorePegs.LogicCode.LinkableHandling;
+using MorePegs.Server;
 using MorePegs.Shared;
-using LogicWorld.SharedCode.Components;
-using LICC;
 using SkysGeneralLib.Server.TypeExtensions;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace MorePegs.LogicCode;
 
-public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
+public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks
 {
     public readonly static PackageManager2D ManagerAtBoardHeight = new();
     public readonly static PackageManager2D ManagerAboveBoard = new();
@@ -22,7 +18,6 @@ public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
 
     protected const float Epsilon = 0.01f;
 
-    private Vector3 previousLocation;
     private Handler2D _handler;
 
     private ComponentAddress GetLinkingAddress()
@@ -30,25 +25,30 @@ public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
         return Component.Parent;
     }
 
-    private bool HasBeenMoved()
+    protected List<PackageManager2D> FindManagers() => (Component.LocalPositionFixed.y - 75) switch
     {
-        return !Component.WorldPosition.IsPrettyCloseTo(previousLocation);
-    }
-
-    protected virtual List<PackageManager2D> FindManagers()
-    {
-        return [ManagerAtBoardHeight];
-    }
+        > 0 => [ManagerAboveBoard],
+        < 0 => [ManagerBelowBoard],
+        _ => [ManagerAtBoardHeight, ManagerAboveBoard, ManagerBelowBoard]
+    };
 
     protected virtual Vector2Int GetLinkingPosition()
     {
         return new Vector2Int((Component.LocalPositionFixed.x - 50) / 100, (Component.LocalPositionFixed.z - 50) / 100);
     }
 
-    protected abstract (bool x, bool y) GetAxisStatus();
+    protected (bool x, bool z) GetAxisStatus() => (
+        GetEffectiveAxis().x && (Mathf.Abs(Component.localUp.z) >= Epsilon || Mathf.Abs(Component.localUp.y) >= Epsilon),
+        GetEffectiveAxis().z && (Mathf.Abs(Component.localUp.x) >= Epsilon || Mathf.Abs(Component.localUp.y) >= Epsilon)
+    );
 
+    private (bool x, bool z) GetEffectiveAxis()
+    {
+        bool rotated = Mathf.Abs((Component.LocalRotation*Vector3.right).RoundToNearestCardinalValue().x) >= 0.5;
 
-     
+        return rotated ? (Data.ConnectedAxisZ, Data.ConnectedAxisX) : (Data.ConnectedAxisX, Data.ConnectedAxisZ);
+    }
+    
     public bool IsOnValidBoard()
     {
         var parent = Component.Parent.GetComponent();
@@ -69,28 +69,28 @@ public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
                 GetAxisStatus = GetAxisStatus,
             }
         };
-
-        previousLocation = Component.WorldPosition;
     }
 
     public override void OnComponentDestroyed()
     {
-        _handler.StopTracking();
+        TryStopTracking();
     }
 
     public override void OnComponentMoved()
     {
-        if (_handler.IsBeingTracked())
+        TryStopTracking();
+        TryStartTracking();
+    }
+
+    protected override void OnCustomDataUpdated()
+    {
+        if (_handler == null)
         {
-            _handler.StopTracking();
+            return;
         }
 
-        if (IsOnValidBoard())
-        {
-            _handler.StartTracking(FindManagers());
-        }
-
-        previousLocation = Component.WorldPosition;
+        TryStopTracking();
+        TryStartTracking();
     }
 
     public void OnParentRepositioned()
@@ -103,7 +103,7 @@ public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
 
     public void OnComponentPegCountUpdated()
     {
-        _handler.StopTracking();
+        TryStopTracking();
 
         _handler = new Handler2D
         {
@@ -117,16 +117,28 @@ public abstract class BoardPeg : LogicComponent, ILogicComponentHooks
             }
         };
 
+        TryStartTracking();
+    }
+
+    private void TryStopTracking()
+    {
+        if (_handler.IsBeingTracked())
+        {
+            _handler.StopTracking();
+        }
+    }
+
+    private void TryStartTracking()
+    {
         if (IsOnValidBoard())
         {
             _handler.StartTracking(FindManagers());
         }
-
-        previousLocation = Component.WorldPosition;
     }
 
-    /*protected override void SetDataDefaultValues()
+    protected override void SetDataDefaultValues()
     {
-        Data.ConnectedAxis = (CodeInfoBools[0], CodeInfoBools[1]);
-    }*/
+        Data.ConnectedAxisX = CodeInfoBools[0];
+        Data.ConnectedAxisZ = CodeInfoBools[1];
+    }
 }
