@@ -1,0 +1,7 @@
+MHG.SettingsMenu.Pages.Gameplay.Headings.MorePegs: "Mod: More Pegs"
+
+MorePegs.MaxBoardPegHeight : "Max Board Peg Height"
+MorePegs.MaxBoardPegHeight.Description : """
+    Maximum height of board pegs.
+    """
+    

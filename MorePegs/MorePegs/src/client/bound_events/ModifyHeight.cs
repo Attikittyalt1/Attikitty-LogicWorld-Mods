@@ -1,4 +1,5 @@
 ﻿using LogicAPI.Data.BuildingRequests;
+using LogicSettings;
 using LogicWorld.Building.Overhaul;
 using LogicWorld.BuildingManagement;
 using SkysGeneralLib.Client.TypeExtensions;
@@ -11,8 +12,10 @@ public abstract class ModifyHeight : BuildingOperation
 {
     protected abstract int GetNewInputCount(int inputCount);
 
-    public static int MinHeight = 1;
-    public static int MaxHeight = 32;
+    public static int MinHeight { get; set; } = 1;
+
+    [Setting_SliderInt("MorePegs.MaxBoardPegHeight")]
+    public static int MaxHeight { get; set; } = 8;
 
     public override bool CanOperateOn(ComponentSelection selection)
     {

@@ -3,3 +3,7 @@ MorePegs.MorePegs:
         - MHG.BuildActions
     Triggers:
         - MorePegs.ToggleAxis
+        - MorePegs.IncrementHeight
+        - MorePegs.DecrementHeight
+        - MorePegs.DoubleHeight
+        - MorePegs.HalveHeight

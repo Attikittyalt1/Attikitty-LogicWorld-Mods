@@ -1,13 +1,23 @@
-# Board Pegs
-Adds pegs that connect via the grid on their parent board.
+# More Pegs
+Adds a variety of routing components.
 
-More specifically, each board peg has a hidden link to every other board peg in the same row or column as it. If placed on the side of a board, they only connect in the direction of the board and not to any other board pegs on the same side.
-
+## Components:
 These can be found in the Miscellaneous/Routing section of the components inventory.
+
+- Board Peg: Connects to every other board peg in the same row/column on the same board. Can have multiple levels, which act independent from eachother. Check keybinds for more configuration info.
+
+## Keybinds:
+
+- Toggle Axis: Toggles connection axis of selected board peg. Affected axis depends on viewed side.
+- [Increment/Decrement/Double/Halve] Height: Modifies height of selected board peg accordingly.
+
+## Settings:
+
+- Max Board Peg Height: Maximum height of board pegs.
 
 ## Install / Dependencies:
 
-Just drop the `BoardPegs` folder into your `GameData` folder.
+Just drop the `MorePegs` folder into your `GameData` folder.
 
 For this mod to function, you will need the following mods:
 - [`EccsLogicWorldAPI`](https://github.com/Ecconia/Ecconia-LogicWorld-Mods/tree/master/EccsLogicWorldAPI) by @Ecconia

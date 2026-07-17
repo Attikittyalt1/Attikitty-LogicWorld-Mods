@@ -27,10 +27,10 @@ public class MyClient : ClientMod
     {
         InitializeKeybinds();
 
-        var harmony = new Harmony("AttikittySelectionToolsClient");
+        var harmony = new Harmony(Manifest.ID);
         harmony.PatchAll();
 
-        CustomInput.Register<Context, Triggers>("AttikittySelectionTools");
+        CustomInput.Register<Context, Triggers>(Manifest.ID);
 
         WorldHook.worldLoading += WorldHook_worldLoading;
         WorldHook.worldUnloading += WorldHook_worldUnloading;

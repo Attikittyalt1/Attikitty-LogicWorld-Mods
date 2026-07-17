@@ -2,5 +2,25 @@ MHG.SettingsMenu.Pages.Controls.Headings.MorePegs: "Mod: More Pegs"
 
 FancyInput.Trigger.MorePegs.ToggleAxis : "Toggle Axis"
 FancyInput.Trigger.MorePegs.ToggleAxis.Description : """
-    Toggles board peg connection on viewed axis.
+    Toggles connection axis of selected board peg. Affected axis depends on viewed side
+    """
+    
+FancyInput.Trigger.MorePegs.IncrementHeight : "Toggle Axis"
+FancyInput.Trigger.MorePegs.IncrementHeight.Description : """
+    Increments height of selected board peg.
+    """
+
+FancyInput.Trigger.MorePegs.DecrementHeight : "Toggle Axis"
+FancyInput.Trigger.MorePegs.DecrementHeight.Description : """
+    Decrements height of selected board peg.
+    """
+
+FancyInput.Trigger.MorePegs.DoubleHeight : "Toggle Axis"
+FancyInput.Trigger.MorePegs.DoubleHeight.Description : """
+    Doubles height of selected board peg.
+    """
+
+FancyInput.Trigger.MorePegs.HalveHeight : "Toggle Axis"
+FancyInput.Trigger.MorePegs.HalveHeight.Description : """
+    Halves height of selected board peg.
     """
