@@ -1,9 +1,8 @@
 ﻿using LogicAPI.Server.Components;
-using MorePegs.LogicCode.LinkableHandling;
 using System;
 
 
-namespace MorePegs.LogicCode;
+namespace MorePegs.LogicCode.LinkableHandling;
 
 public class LinkablePeg : ILinkable
 {

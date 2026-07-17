@@ -1,7 +1,5 @@
 ﻿using JimmysUnityUtilities;
-using LICC;
 using LogicAPI.Data;
-using MorePegs.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -100,6 +98,6 @@ public class Handler
             }
         }
 
-        StartTracking(info, true, updatePreviousManagers); // technically I could just put false for acknowledgePreviousState but this makes things a bit nicer
+        StartTracking(info, true, updatePreviousManagers);
     }
 }

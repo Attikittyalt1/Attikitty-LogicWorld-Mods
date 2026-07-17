@@ -1,13 +1,11 @@
-﻿using JetBrains.Annotations;
-using LICC;
+﻿using LICC;
 using LogicAPI.Server.Components;
-using MorePegs.LogicCode.LinkableHandling;
 using MorePegs.Server;
 using System;
 using System.Collections.Generic;
 
 
-namespace MorePegs.LogicCode;
+namespace MorePegs.LogicCode.LinkableHandling;
 
 public class LinkableMultiPeg : ILinkable
 {

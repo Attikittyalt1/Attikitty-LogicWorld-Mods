@@ -1,6 +1,5 @@
 ﻿using FancyInput;
 using LogicAPI.Client;
-using LogicSettings;
 using MorePegs.Client.Inputs;
 
 namespace MorePegs.Client;
