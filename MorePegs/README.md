@@ -9,5 +9,7 @@ These can be found in the Miscellaneous/Routing section of the components invent
 
 Just drop the `BoardPegs` folder into your `GameData` folder.
 
-For this mod to function, you will need one additional mod: `EccsLogicWorldAPI`
-You can find it in [this mod collection](https://github.com/Ecconia/Ecconia-LogicWorld-Mods/tree/master) by @Ecconia.
+For this mod to function, you will need the following mods:
+- [`EccsLogicWorldAPI`](https://github.com/Ecconia/Ecconia-LogicWorld-Mods/tree/master/EccsLogicWorldAPI) by @Ecconia
+- [`HarmonyForLogicWorld`](https://github.com/Ecconia/Ecconia-LogicWorld-Mods/tree/master/HarmonyForLogicWorld) by @Ecconia
+- [`SkysGeneralLib`](https://github.com/skyjoe999/SkysLogicWorldMods/tree/main/SkysGeneralLib) by @skyjoe999

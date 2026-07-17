@@ -1,138 +1,150 @@
 ﻿using JimmysUnityUtilities;
+using LICC;
+using LogicAPI;
 using LogicAPI.Data;
 using LogicWorld.Server.Circuitry;
 using MorePegs.LogicCode.LinkableHandling;
 using MorePegs.Server;
 using MorePegs.Shared;
 using SkysGeneralLib.Server.TypeExtensions;
+using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
+using System.Collections;
 
 namespace MorePegs.LogicCode;
 
-public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks
+public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHasParentWithPackageManager
 {
-    public readonly static PackageManager2D ManagerAtBoardHeight = new();
-    public readonly static PackageManager2D ManagerAboveBoard = new();
-    public readonly static PackageManager2D ManagerBelowBoard = new();
-
     protected const float Epsilon = 0.01f;
 
+    private (int x, int y) oldPosition;
+    private bool _initalizing;
     private Handler2D _handler;
+    private ILinkable _linkable;
 
-    private ComponentAddress GetLinkingAddress()
+    public ComponentAddress GetLinkingAddress() => Component.Parent;
+
+    public (List<PackageManager> x, List<PackageManager> y) GetManagers()
     {
-        return Component.Parent;
+        List<(PackageManager, PackageManager)> managers = (Component.LocalPositionFixed.y - 75) switch
+        {
+            > 0 => [MyServer.ManagersAboveBoard],
+            < 0 => [MyServer.ManagersBelowBoard],
+            _ => [MyServer.ManagersAboveBoard, MyServer.ManagersBelowBoard]
+        };
+        
+        return managers.Unpack();
     }
 
-    protected List<PackageManager2D> FindManagers() => (Component.LocalPositionFixed.y - 75) switch
-    {
-        > 0 => [ManagerAboveBoard],
-        < 0 => [ManagerBelowBoard],
-        _ => [ManagerAtBoardHeight, ManagerAboveBoard, ManagerBelowBoard]
-    };
+    public (List<PackageManager> x, List<PackageManager> y) GetActiveManagers() => _handler.ActiveManagers;
 
-    protected virtual Vector2Int GetLinkingPosition()
-    {
-        return new Vector2Int((Component.LocalPositionFixed.x - 50) / 100, (Component.LocalPositionFixed.z - 50) / 100);
-    }
-
-    protected (bool x, bool z) GetAxisStatus() => (
-        GetEffectiveAxis().x && (Mathf.Abs(Component.localUp.z) >= Epsilon || Mathf.Abs(Component.localUp.y) >= Epsilon),
-        GetEffectiveAxis().z && (Mathf.Abs(Component.localUp.x) >= Epsilon || Mathf.Abs(Component.localUp.y) >= Epsilon)
+    public (int x, int y) GetLinkingPosition() => (
+        (Component.LocalPositionFixed.x - 50) / 100, 
+        (Component.LocalPositionFixed.z - 50) / 100
     );
 
-    private (bool x, bool z) GetEffectiveAxis()
+    public (bool x, bool y) GetAxisStatus()
     {
-        bool rotated = Mathf.Abs((Component.LocalRotation*Vector3.right).RoundToNearestCardinalValue().x) >= 0.5;
+        var newRight = Shared.QuaternionExtensions.FromToRotation(Component.localUp, Vector3.up) * Component.localRight;
 
-        return rotated ? (Data.ConnectedAxisZ, Data.ConnectedAxisX) : (Data.ConnectedAxisX, Data.ConnectedAxisZ);
-    }
-    
-    public bool IsOnValidBoard()
-    {
-        var parent = Component.Parent.GetComponent();
+        var (parallelX, parallelZ) = (
+            Mathf.Abs(newRight.x) > Epsilon,
+            Mathf.Abs(newRight.z) > Epsilon
+        );
 
-        return parent != null;
+        (bool connectX, bool connectZ) = (Data.ConnectedAxisZ, Data.ConnectedAxisX);
+
+        return (
+            connectX && parallelX || connectZ && parallelZ,
+            connectX && parallelZ || connectZ && parallelX
+        );
     }
+
+    public bool IsOnValidBoard() => 
+        GetLinkingAddress().GetComponent() != null;
 
     protected override void Initialize()
     {
-        _handler = new Handler2D
-        {
-            GetAddress = () => GetLinkingAddress(),
-            Linkable = new LinkableContainer2D
-            {
-                Address = Address,
-                Linkable = new LinkableMultiPeg(Inputs),
-                GetLinkingPosition = GetLinkingPosition,
-                GetAxisStatus = GetAxisStatus,
-            }
-        };
+        _linkable = new LinkableMultiPeg(Inputs);
+
+        _handler = new Handler2D(
+            GetLinkingAddress, 
+            (
+                () => new() 
+                {
+                    Address = Address,
+                    Linkable = _linkable,
+                    Position = GetLinkingPosition().x
+                }, 
+                () => new() 
+                {
+                    Address = Address,
+                    Linkable = _linkable,
+                    Position = GetLinkingPosition().y
+                }
+            )
+        );
+
+        if (IsOnValidBoard()) {
+            _handler.StartTracking(GetManagers(), GetAxisStatus());
+            oldPosition = GetLinkingPosition();
+        }
+
+        _initalizing = true;
     }
 
     public override void OnComponentDestroyed()
     {
-        TryStopTracking();
+        _handler.StopTracking();
     }
 
     public override void OnComponentMoved()
     {
-        TryStopTracking();
-        TryStartTracking();
+        if (_initalizing)
+        {
+            _initalizing = false;
+            return;
+        }
+
+        _handler.StopTracking();
+        if (IsOnValidBoard())
+        {
+            _handler.StartTracking(GetManagers(), GetAxisStatus());
+            oldPosition = GetLinkingPosition();
+        }
+    }
+
+    public virtual void OnParentRepositioned()
+    {
+        var newPosition = GetLinkingPosition();
+        if (MyServer.DEBUG) LConsole.WriteLine("reposition coords: {0}, {1}", newPosition.x - oldPosition.x, newPosition.y - oldPosition.y);
+        oldPosition = GetLinkingPosition();
     }
 
     protected override void OnCustomDataUpdated()
     {
-        if (_handler == null)
-        {
+        if (_handler == null) {
             return;
         }
 
-        TryStopTracking();
-        TryStartTracking();
-    }
-
-    public void OnParentRepositioned()
-    {
-        if (_handler.IsBeingTracked())
+        if (IsOnValidBoard())
         {
-            _handler.UpdatePositions();
+            _handler.UpdateTracking(GetManagers(), GetAxisStatus());
         }
     }
 
     public void OnComponentPegCountUpdated()
     {
-        TryStopTracking();
+        _handler.StopTracking();
 
-        _handler = new Handler2D
-        {
-            GetAddress = () => GetLinkingAddress(),
-            Linkable = new LinkableContainer2D
-            {
-                Address = Address,
-                Linkable = new LinkableMultiPeg(Inputs),
-                GetLinkingPosition = GetLinkingPosition,
-                GetAxisStatus = GetAxisStatus,
-            }
-        };
+        _linkable = new LinkableMultiPeg(Inputs);
 
-        TryStartTracking();
-    }
-
-    private void TryStopTracking()
-    {
-        if (_handler.IsBeingTracked())
-        {
-            _handler.StopTracking();
-        }
-    }
-
-    private void TryStartTracking()
-    {
         if (IsOnValidBoard())
         {
-            _handler.StartTracking(FindManagers());
+            _handler.StartTracking(GetManagers(), GetAxisStatus());
         }
     }
 

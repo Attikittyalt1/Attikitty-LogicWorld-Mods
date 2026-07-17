@@ -58,7 +58,7 @@ class RowPackage
             throw new Exception("Tried to add linkable to package that already contains it");
         }
 
-        var position = container.GetLinkingPosition();
+        var position = container.Position;
 
         LinkAtPosition(container, position);
 
@@ -77,22 +77,7 @@ class RowPackage
         LinkablePositions.Remove(container);
     }
 
-    public void UpdatePositions()
-    {
-        int positionChange = GetPositionChangeFromBoard();
-        if (positionChange == 0) return;
-
-        ChangePositionsInUnision(positionChange);
-    }
-
-    private int GetPositionChangeFromBoard()
-    {
-        var (container, oldPosition) = LinkablePositions.First();
-
-        return container.GetLinkingPosition() - oldPosition;
-    }
-
-    private void ChangePositionsInUnision(int deltaPos)
+    public void OffsetPositions(int deltaPos)
     {
         if (MyServer.DEBUG) LConsole.WriteLine("changing positions with delta: " + deltaPos);
 
@@ -111,7 +96,7 @@ class RowPackage
 
     private void LinkAtPosition(LinkableContainer container, int position)
     {
-        if (MyServer.DEBUG) LConsole.WriteLine("started to link at position: {0}", position);
+        if (MyServer.DEBUG) LConsole.WriteLine("started to link {1} at position: {0}", position, container.Address);
 
         if (!LinkedRows.TryGetValue(position, out var linkedRow))
         {
@@ -127,7 +112,7 @@ class RowPackage
 
     private void UnlinkAtPosition(LinkableContainer container, int position)
     {
-        if (MyServer.DEBUG) LConsole.WriteLine("started to unlink at position: {0}", position);
+        if (MyServer.DEBUG) LConsole.WriteLine("started to unlink {1} at position: {0}", position, container.Address);
 
         if (!LinkedRows.TryGetValue(position, out var linkedRow))
         {

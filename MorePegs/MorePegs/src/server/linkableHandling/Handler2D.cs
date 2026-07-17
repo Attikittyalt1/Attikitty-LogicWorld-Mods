@@ -1,69 +1,91 @@
-﻿using LogicAPI.Data;
+﻿using LICC;
+using LogicAPI.Data;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MorePegs.LogicCode.LinkableHandling;
 
 public class Handler2D
 {
-    public LinkableContainer2D Linkable { get; init; }
-    public Func<ComponentAddress> GetAddress { get; init; }
+    private Handler _x;
+    private Handler _y;
 
-    private ComponentAddress? _trackerKey;
-    private bool _isTracked = false;
-    private readonly List<PackageManager2D> _currentManagers = [];
-
-    public bool IsBeingTracked()
+    public Handler2D(Func<ComponentAddress> GetAddress, (Func<LinkableContainer> x, Func<LinkableContainer> y) GetLinkable)
     {
-        return _isTracked;
+        _x = new Handler()
+        {
+            GetAddress = GetAddress,
+            GetLinkable = GetLinkable.x
+        };
+
+        _y = new Handler()
+        {
+            GetAddress = GetAddress,
+            GetLinkable = GetLinkable.y
+        };
     }
 
-    public void StartTracking(IEnumerable<PackageManager2D> packageManagers)
+    public (bool x, bool y) IsBeingTracked { get => (_x.IsBeingTracked, _y.IsBeingTracked); }
+
+    public (List<PackageManager> x, List<PackageManager> y) ActiveManagers { get => (_x.ActiveManagers, _y.ActiveManagers); }
+
+    public void StartTracking((IEnumerable<PackageManager> x, IEnumerable<PackageManager> y) managers, (bool x, bool y) connectedAxis)
     {
-        if (_isTracked)
+        if (connectedAxis.x)
         {
-            throw new Exception("Tried to start tracking link that is already being tracked");
+            _x.StartTracking(managers.x);
         }
 
-        _trackerKey = GetAddress();
-
-        foreach (var manager in packageManagers)
+        if (connectedAxis.y)
         {
-            manager.StartTrackingLinkable(Linkable, _trackerKey.Value);
-            _currentManagers.Add(manager);
+            _y.StartTracking(managers.y);
         }
-
-        _isTracked = true;
     }
 
     public void StopTracking()
     {
-        if (!_isTracked)
+        if (_x.IsBeingTracked)
         {
-            throw new Exception("Tried to stop tracking link that is not being tracked");
+            _x.StopTracking();
         }
 
-        foreach (var manager in _currentManagers)
+        if (_y.IsBeingTracked)
         {
-            manager.StopTrackingLinkable(Linkable, _trackerKey.Value);
+            _y.StopTracking();
         }
-        _currentManagers.Clear();
-
-        _trackerKey = null;
-
-        _isTracked = false;
     }
 
-    public void UpdatePositions()
+    public void UpdateTracking((IEnumerable<PackageManager> x, IEnumerable<PackageManager> y) managers, (bool x, bool y) connectedAxis)
     {
-        if (!_isTracked)
+        if (connectedAxis.x)
         {
-            throw new Exception("Tried to update positions for managers of link that is not being tracked");
+            if (!_x.IsBeingTracked)
+            {
+                _x.StartTracking(managers.x);
+            }
+        }
+        else
+        {
+            if (_x.IsBeingTracked)
+            {
+                _x.StopTracking();
+            }
         }
 
-        foreach (var manager in _currentManagers)
+        if (connectedAxis.y)
         {
-            manager.UpdatePositions(_trackerKey.Value);
+            if (!_y.IsBeingTracked)
+            {
+                _y.StartTracking(managers.y);
+            }
+        }
+        else
+        {
+            if (_y.IsBeingTracked)
+            {
+                _y.StopTracking();
+            }
         }
     }
 }

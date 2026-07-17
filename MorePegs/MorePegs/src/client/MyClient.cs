@@ -8,6 +8,6 @@ public class MyClient : ClientMod
 {
     protected override void Initialize()
     {
-        CustomInput.Register<Context, Triggers>("MorePegs");
+        CustomInput.Register<Context, Triggers>(Manifest.ID);
     }
 }

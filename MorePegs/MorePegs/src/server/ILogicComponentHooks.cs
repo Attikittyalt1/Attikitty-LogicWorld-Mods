@@ -4,8 +4,12 @@ using LogicAPI.Data;
 using LogicAPI.Services;
 using LogicAPI.WorldDataMutations;
 using LogicWorld.Server;
+using MorePegs.LogicCode.LinkableHandling;
 using SkysGeneralLib.Server.TypeExtensions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace MorePegs.Server;
 
@@ -37,7 +41,6 @@ public interface ILogicComponentHooks
     }
 }
 
-
 [HarmonyPatch]
 class MultiSelectRemoveAddressPatch
 {
@@ -45,11 +48,43 @@ class MultiSelectRemoveAddressPatch
     [HarmonyPostfix]
     static void Postfix(WorldMutation_RepositionComponent mutation)
     {
-        var parent = mutation.AddressOfTargetComponent.GetComponent();
+        var parent = mutation.AddressOfTargetComponent;
 
-        foreach (var child in parent.EnumerateChildren())
+        List<PackageManager> managersX = [];
+        List<PackageManager> managersY = [];
+
+        foreach (var child in parent.GetComponent().EnumerateChildren())
         {
-            (child.GetLogicComponent() as ILogicComponentHooks)?.OnParentRepositioned();
+            var component = child.GetLogicComponent();
+
+            (component as ILogicComponentHooks)?.OnParentRepositioned();
+
+            if (component is IHasParentWithPackageManager componentAsIHasParentWithPackageManager)
+            {
+                var currentManagers = componentAsIHasParentWithPackageManager.GetActiveManagers();
+
+                managersX.AddRange(currentManagers.x.Except(managersX));
+                managersY.AddRange(currentManagers.y.Except(managersY));
+            }
+        }
+
+        var offset = mutation.LocalPositionDelta;
+        var fixedOffset = ComponentData.ConvertPositionToFixedPosition(offset);
+
+        var offsetX = -(fixedOffset.x) / 100;
+        var offsetY = -(fixedOffset.z) / 100;
+
+        if (MyServer.DEBUG) LConsole.WriteLine("new offset: {0}, {1}", offsetX, offsetY);
+        if (MyServer.DEBUG) LConsole.WriteLine("manager counts: {0}, {1}", managersX.Count, managersY.Count);
+
+        foreach (var manager in managersX)
+        {
+            manager.OffsetPositions(parent, offsetX);
+        }
+
+        foreach (var manager in managersY)
+        {
+            manager.OffsetPositions(parent, offsetY);
         }
     }
 }

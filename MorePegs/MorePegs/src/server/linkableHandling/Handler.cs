@@ -1,4 +1,5 @@
-﻿using LogicAPI.Data;
+﻿using LICC;
+using LogicAPI.Data;
 using System;
 using System.Collections.Generic;
 
@@ -6,64 +7,50 @@ namespace MorePegs.LogicCode.LinkableHandling;
 
 public class Handler
 {
-    public LinkableContainer Linkable { get; init; }
-    public Func<ComponentAddress> GetAddress { get; init; }
+    public bool IsBeingTracked { get; private set; } = false;
+    public List<PackageManager> ActiveManagers { get; } = [];
+
+    public required Func<ComponentAddress> GetAddress { get; init; }
+    public required Func<LinkableContainer> GetLinkable { get; init; }
 
     private ComponentAddress? _trackerKey;
-    private bool _isTracked = false;
-    private readonly List<PackageManager> _currentManagers = [];
-
-    public bool IsBeingTracked()
-    {
-        return _isTracked;
-    }
+    private LinkableContainer _linkable;
 
     public void StartTracking(IEnumerable<PackageManager> packageManagers)
     {
-        if (_isTracked)
+        if (IsBeingTracked)
         {
             throw new Exception("Tried to start tracking link that is already being tracked");
         }
 
         _trackerKey = GetAddress();
+        _linkable = GetLinkable();
 
         foreach (var manager in packageManagers)
         {
-            manager.StartTrackingLinkable(Linkable, _trackerKey.Value);
-            _currentManagers.Add(manager);
+            manager.StartTrackingLinkable(_linkable, _trackerKey.Value);
+            ActiveManagers.Add(manager);
         }
 
-        _isTracked = true;
+        IsBeingTracked = true;
     }
 
     public void StopTracking()
     {
-        if (!_isTracked)
+        if (!IsBeingTracked)
         {
             throw new Exception("Tried to stop tracking link that is not being tracked");
         }
 
-        foreach (var manager in _currentManagers)
+        foreach (var manager in ActiveManagers)
         {
-            manager.StopTrackingLinkable(Linkable, _trackerKey.Value);
+            manager.StopTrackingLinkable(_linkable, _trackerKey.Value);
         }
-        _currentManagers.Clear();
+        ActiveManagers.Clear();
 
         _trackerKey = null;
+        _linkable = null;
 
-        _isTracked = false;
-    }
-
-    public void UpdatePositions()
-    {
-        if (!_isTracked)
-        {
-            throw new Exception("Tried to update positions for managers of link that is not being tracked");
-        }
-
-        foreach(var manager in _currentManagers)
-        {
-            manager.UpdatePositions(_trackerKey.Value);
-        }
+        IsBeingTracked = false;
     }
 }

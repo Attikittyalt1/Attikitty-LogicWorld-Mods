@@ -6,20 +6,20 @@ namespace MorePegs.LogicCode.LinkableHandling;
 
 public class PackageManager
 {
-    private readonly Dictionary<ComponentAddress, RowPackage> PackagesByAddress = [];
+    private readonly Dictionary<ComponentAddress, RowPackage> _packagesByAddress = [];
     public void StartTrackingLinkable(LinkableContainer container, ComponentAddress address)
     {
-        if (!PackagesByAddress.TryGetValue(address, out var package))
+        if (!_packagesByAddress.TryGetValue(address, out var package))
         {
             package = new RowPackage();
-            PackagesByAddress.Add(address, package);
+            _packagesByAddress.Add(address, package);
         }
 
         package.AddLinkable(container);
     }
     public void StopTrackingLinkable(LinkableContainer container, ComponentAddress address)
     {
-        if (!PackagesByAddress.TryGetValue(address, out var package))
+        if (!_packagesByAddress.TryGetValue(address, out var package))
         {
             throw new Exception("Failed to find Package at provided address");
         }
@@ -29,17 +29,22 @@ public class PackageManager
         if (package.IsEmpty())
         {
             package.Uninitialize();
-            PackagesByAddress.Remove(address);
+            _packagesByAddress.Remove(address);
         }
     }
 
-    public void UpdatePositions(ComponentAddress address)
+    public bool HasPackgesAtAddress(ComponentAddress address)
     {
-        if (!PackagesByAddress.TryGetValue(address, out var package))
+        return _packagesByAddress.ContainsKey(address);
+    }
+
+    public void OffsetPositions(ComponentAddress address, int deltaPos)
+    {
+        if (!_packagesByAddress.TryGetValue(address, out var package))
         {
             throw new Exception("Failed to find Package at provided address");
         }
 
-        package.UpdatePositions();
+        package.OffsetPositions(deltaPos);
     }
 }

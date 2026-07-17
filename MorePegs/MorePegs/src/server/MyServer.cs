@@ -1,13 +1,18 @@
 ﻿using HarmonyLib;
 using LICC;
 using LogicAPI.Server;
+using MorePegs.LogicCode.LinkableHandling;
 using System;
+using UnityEngine;
 
 namespace MorePegs.Server;
 
 public class MyServer : ServerMod
 {
     public const bool DEBUG = false;
+
+    public static readonly (PackageManager x, PackageManager y) ManagersAboveBoard = (new(), new());
+    public static readonly (PackageManager x, PackageManager y) ManagersBelowBoard = (new(), new());
 
     protected override void Initialize()
     {
@@ -16,6 +21,6 @@ public class MyServer : ServerMod
 
         ILogicComponentHooks.Init();
 
-        LConsole.WriteLine(String.Format("{0} harmony initialized.", Manifest.ID));
+        LConsole.WriteLine("{0} harmony initialized.", Manifest.ID);
     }
 }

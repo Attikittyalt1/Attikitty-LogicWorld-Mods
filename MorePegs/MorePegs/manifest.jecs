@@ -1,8 +1,10 @@
 ID: MorePegs
 Name: More Pegs
 Author: Attikitty
-Version: 1.1.1
+Version: 1.1.2
 Priority: 0
 
 Dependencies:
     - EccsLogicWorldAPI
+    - HarmonyForLogicWorld
+    - SkysGeneralLib

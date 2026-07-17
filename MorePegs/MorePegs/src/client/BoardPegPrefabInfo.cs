@@ -16,8 +16,8 @@ public class BoardPegPrefabInfo()
     public float RectSize {  get; init; }
 
     public float CombinedHeight => BlockHeight + PegHeight;
-    public float RectWidthOffset => BlockWidth / 2 + 0.001f;
-    public float RectHeightOffset => (BlockHeight - RectSize) * 3;
+    public float RectWidthOffset => BlockWidth / 2f + 0.001f;
+    public float RectHeightOffset => BlockHeight / 2f;
 
     public Prefab GetPrefab(int InputCount, (bool x, bool y) ConnectedAxis)
     {
@@ -33,7 +33,7 @@ public class BoardPegPrefabInfo()
                 Scale = new Vector3(BlockWidth, BlockHeight, BlockWidth),
                 ColliderData = new ColliderData()
                 {
-                    Type = ColliderType.None
+                    Type = i == 0 ? ColliderType.Auto : ColliderType.None
                 }
             };
 
