@@ -1,4 +1,5 @@
-﻿using LogicAPI.Data;
+﻿using LICC;
+using LogicAPI.Data;
 using LogicWorld.Server.Circuitry;
 using MorePegs.LogicCode.LinkableHandling;
 using MorePegs.Server;
@@ -36,7 +37,7 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
 
     public (bool x, bool y) GetAxisStatus()
     {
-        var newRight = Shared.QuaternionExtensions.FromToRotation(Component.localUp, Vector3.up) * Component.localRight;
+        var newRight = QuaternionExtensions.FromToRotation(Component.localUp, Vector3.up) * Component.localRight;
 
         var (parallelX, parallelZ) = (
             Mathf.Abs(newRight.x) > Epsilon,
@@ -58,7 +59,7 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
             return ([], []);
         }
 
-        var managers = GetManagerPairsGivenHeight((Component.LocalPositionFixed.y - 75) / 100).Unpack();
+        var managers = GetManagerPairsGivenHeight((Component.LocalPositionFixed.y / 75) - 1).Unpack();
         var axisStatus = GetAxisStatus();
 
         return (axisStatus.x ? managers.Item1 : [], axisStatus.y ? managers.Item2 : []);
