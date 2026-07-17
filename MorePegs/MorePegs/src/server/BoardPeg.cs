@@ -25,26 +25,22 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
     private Handler2D _handler;
     private ILinkable _linkable;
 
+    public static List<(PackageManager x, PackageManager y)> GetManagerPairsGivenHeight(int height) => height switch
+    {
+        > 0 => [MyServer.ManagersAboveBoard],
+        < 0 => [MyServer.ManagersBelowBoard],
+        _ => [MyServer.ManagersAboveBoard, MyServer.ManagersBelowBoard]
+    };
+
     public ComponentAddress GetLinkingAddress() => Component.Parent;
 
-    public (List<PackageManager> x, List<PackageManager> y) GetManagers()
-    {
-        List<(PackageManager, PackageManager)> managers = (Component.LocalPositionFixed.y - 75) switch
-        {
-            > 0 => [MyServer.ManagersAboveBoard],
-            < 0 => [MyServer.ManagersBelowBoard],
-            _ => [MyServer.ManagersAboveBoard, MyServer.ManagersBelowBoard]
-        };
-        
-        return managers.Unpack();
-    }
-
-    public (List<PackageManager> x, List<PackageManager> y) GetActiveManagers() => _handler.ActiveManagers;
-
     public (int x, int y) GetLinkingPosition() => (
-        (Component.LocalPositionFixed.x - 50) / 100, 
+        (Component.LocalPositionFixed.x - 50) / 100,
         (Component.LocalPositionFixed.z - 50) / 100
     );
+
+    public bool IsOnValidBoard() =>
+        GetLinkingAddress().GetComponent() != null;
 
     public (bool x, bool y) GetAxisStatus()
     {
@@ -63,8 +59,20 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
         );
     }
 
-    public bool IsOnValidBoard() => 
-        GetLinkingAddress().GetComponent() != null;
+    public (List<PackageManager> x, List<PackageManager> y) GetValidManagers()
+    {
+        if (!IsOnValidBoard())
+        {
+            return ([], []);
+        }
+
+        var managers = GetManagerPairsGivenHeight((Component.LocalPositionFixed.y - 75) / 100).Unpack();
+        var axisStatus = GetAxisStatus();
+
+        return (axisStatus.x ? managers.Item1 : [], axisStatus.y ? managers.Item2 : []);
+    }
+
+    public (List<PackageManager> x, List<PackageManager> y) GetActiveManagers() => _handler.ActiveManagers;
 
     protected override void Initialize()
     {
@@ -88,10 +96,7 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
             )
         );
 
-        if (IsOnValidBoard()) {
-            _handler.StartTracking(GetManagers(), GetAxisStatus());
-            oldPosition = GetLinkingPosition();
-        }
+        _handler.StartTracking(GetValidManagers());
 
         _initalizing = true;
     }
@@ -109,19 +114,7 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
             return;
         }
 
-        _handler.StopTracking();
-        if (IsOnValidBoard())
-        {
-            _handler.StartTracking(GetManagers(), GetAxisStatus());
-            oldPosition = GetLinkingPosition();
-        }
-    }
-
-    public virtual void OnParentRepositioned()
-    {
-        var newPosition = GetLinkingPosition();
-        if (MyServer.DEBUG) LConsole.WriteLine("reposition coords: {0}, {1}", newPosition.x - oldPosition.x, newPosition.y - oldPosition.y);
-        oldPosition = GetLinkingPosition();
+        _handler.UpdateTracking(GetValidManagers());
     }
 
     protected override void OnCustomDataUpdated()
@@ -130,10 +123,8 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
             return;
         }
 
-        if (IsOnValidBoard())
-        {
-            _handler.UpdateTracking(GetManagers(), GetAxisStatus());
-        }
+        // it should be okay to put false because the handler never changes state between another hook and this one
+        _handler.UpdateTracking(GetValidManagers(), false);
     }
 
     public void OnComponentPegCountUpdated()
@@ -141,11 +132,8 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
         _handler.StopTracking();
 
         _linkable = new LinkableMultiPeg(Inputs);
-
-        if (IsOnValidBoard())
-        {
-            _handler.StartTracking(GetManagers(), GetAxisStatus());
-        }
+        
+        _handler.StartTracking(GetValidManagers());
     }
 
     protected override void SetDataDefaultValues()

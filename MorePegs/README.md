@@ -1,5 +1,5 @@
 # More Pegs
-Adds a variety of routing components.
+Adds a variety of routing components. (Currently one :P)
 
 ## Components:
 These can be found in the Miscellaneous/Routing section of the components inventory.

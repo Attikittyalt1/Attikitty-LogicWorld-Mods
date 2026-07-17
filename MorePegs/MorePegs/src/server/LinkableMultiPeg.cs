@@ -1,5 +1,8 @@
-﻿using LogicAPI.Server.Components;
+﻿using JetBrains.Annotations;
+using LICC;
+using LogicAPI.Server.Components;
 using MorePegs.LogicCode.LinkableHandling;
+using MorePegs.Server;
 using System;
 using System.Collections.Generic;
 
@@ -64,6 +67,8 @@ public class LinkableMultiPeg : ILinkable
 
     private void Link(LinkableMultiPeg linkable)
     {
+        if (MyServer.DEBUG) LConsole.WriteLine("linking multipeg with my count {0} and theirs {1}", InputPegs.Count, linkable.InputPegs.Count);
+
         for (int i = 0; i < Math.Min(InputPegs.Count, linkable.InputPegs.Count); i++)
         {
             InputPegs[i].AddSecretLinkWith(linkable.InputPegs[i]);
@@ -72,6 +77,8 @@ public class LinkableMultiPeg : ILinkable
 
     private void Unlink(LinkableMultiPeg linkable)
     {
+        if (MyServer.DEBUG) LConsole.WriteLine("unlinking multipeg with my count {0} and theirs {1}", InputPegs.Count, linkable.InputPegs.Count);
+
         for (int i = 0; i < Math.Min(InputPegs.Count, linkable.InputPegs.Count); i++)
         {
             InputPegs[i].RemoveSecretLinkWith(linkable.InputPegs[i]);

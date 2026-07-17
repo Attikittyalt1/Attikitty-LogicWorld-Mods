@@ -30,62 +30,21 @@ public class Handler2D
 
     public (List<PackageManager> x, List<PackageManager> y) ActiveManagers { get => (_x.ActiveManagers, _y.ActiveManagers); }
 
-    public void StartTracking((IEnumerable<PackageManager> x, IEnumerable<PackageManager> y) managers, (bool x, bool y) connectedAxis)
+    public void StartTracking((IEnumerable<PackageManager> x, IEnumerable<PackageManager> y) managers)
     {
-        if (connectedAxis.x)
-        {
-            _x.StartTracking(managers.x);
-        }
-
-        if (connectedAxis.y)
-        {
-            _y.StartTracking(managers.y);
-        }
+        _x.StartTracking(managers.x);
+        _y.StartTracking(managers.y);
     }
 
     public void StopTracking()
     {
-        if (_x.IsBeingTracked)
-        {
-            _x.StopTracking();
-        }
-
-        if (_y.IsBeingTracked)
-        {
-            _y.StopTracking();
-        }
+        _x.StopTracking(false);
+        _y.StopTracking(false);
     }
 
-    public void UpdateTracking((IEnumerable<PackageManager> x, IEnumerable<PackageManager> y) managers, (bool x, bool y) connectedAxis)
+    public void UpdateTracking((IEnumerable<PackageManager> x, IEnumerable<PackageManager> y) managers, bool updatePreviousManagers = true)
     {
-        if (connectedAxis.x)
-        {
-            if (!_x.IsBeingTracked)
-            {
-                _x.StartTracking(managers.x);
-            }
-        }
-        else
-        {
-            if (_x.IsBeingTracked)
-            {
-                _x.StopTracking();
-            }
-        }
-
-        if (connectedAxis.y)
-        {
-            if (!_y.IsBeingTracked)
-            {
-                _y.StartTracking(managers.y);
-            }
-        }
-        else
-        {
-            if (_y.IsBeingTracked)
-            {
-                _y.StopTracking();
-            }
-        }
+        _x.UpdateTracking(managers.x, updatePreviousManagers);
+        _y.UpdateTracking(managers.y, updatePreviousManagers);
     }
 }
