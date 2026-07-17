@@ -1,5 +1,4 @@
-﻿
-namespace AttikittySelectionTools.Client;
+﻿namespace AttikittySelectionTools.Client;
 
 public abstract class Command
 {

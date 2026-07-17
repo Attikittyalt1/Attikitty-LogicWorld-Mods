@@ -1,5 +1,4 @@
-﻿
-namespace AttikittySelectionTools.Client.Inputs;
+﻿namespace AttikittySelectionTools.Client.Inputs;
 
 public enum Triggers
 {
