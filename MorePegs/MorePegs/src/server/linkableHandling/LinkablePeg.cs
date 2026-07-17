@@ -6,7 +6,7 @@ namespace MorePegs.LogicCode.LinkableHandling;
 
 public class LinkablePeg : ILinkable
 {
-    public readonly IInputPeg InputPeg;
+    public IInputPeg InputPeg { get; set; }
     private bool _trySwap = false;
 
     public LinkablePeg(IInputPeg peg)

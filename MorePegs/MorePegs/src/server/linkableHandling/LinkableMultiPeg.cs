@@ -9,13 +9,8 @@ namespace MorePegs.LogicCode.LinkableHandling;
 
 public class LinkableMultiPeg : ILinkable
 {
-    public readonly IReadOnlyList<IInputPeg> InputPegs;
+    public IReadOnlyList<IInputPeg> InputPegs { get; set; }
     private bool _trySwap = false;
-
-    public LinkableMultiPeg(IReadOnlyList<IInputPeg> pegs)
-    {
-        InputPegs = pegs;
-    }
 
     public void Link(ILinkable linkable)
     {
@@ -69,6 +64,8 @@ public class LinkableMultiPeg : ILinkable
 
         for (int i = 0; i < Math.Min(InputPegs.Count, linkable.InputPegs.Count); i++)
         {
+            if (MyServer.DEBUG) LConsole.WriteLine("addresses: {0}, {1}", InputPegs[i].Address, linkable.InputPegs[i].Address);
+
             InputPegs[i].AddSecretLinkWith(linkable.InputPegs[i]);
         }
     }
@@ -79,6 +76,8 @@ public class LinkableMultiPeg : ILinkable
 
         for (int i = 0; i < Math.Min(InputPegs.Count, linkable.InputPegs.Count); i++)
         {
+            if (MyServer.DEBUG) LConsole.WriteLine("addresses: {0}, {1}", InputPegs[i].Address, linkable.InputPegs[i].Address);
+
             InputPegs[i].RemoveSecretLinkWith(linkable.InputPegs[i]);
         }
     }

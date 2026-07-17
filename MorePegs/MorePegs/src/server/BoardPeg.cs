@@ -13,9 +13,9 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
 {
     protected const float Epsilon = 0.01f;
 
-    private bool _initalizing;
-    private Handler2D _handler;
-    private ILinkable _linkable;
+    private bool _initalized = false;
+    private readonly Handler2D _handler = new();
+    private readonly LinkableMultiPeg _linkable = new();
 
     public static List<(PackageManager x, PackageManager y)> GetManagerPairsGivenHeight(int height) => height switch
     {
@@ -85,13 +85,9 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
 
     protected override void Initialize()
     {
-        _linkable = new LinkableMultiPeg(Inputs);
-
-        _handler = new Handler2D();
+        _linkable.InputPegs = Inputs;
 
         _handler.StartTracking(GetInfo());
-
-        _initalizing = true;
     }
 
     public override void OnComponentDestroyed()
@@ -101,9 +97,9 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
 
     public override void OnComponentMoved()
     {
-        if (_initalizing)
+        if (!_initalized)
         {
-            _initalizing = false;
+            _initalized = true;
             return;
         }
 
@@ -112,7 +108,7 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
 
     protected override void OnCustomDataUpdated()
     {
-        if (_handler == null) {
+        if (!_initalized) {
             return;
         }
 
@@ -121,11 +117,9 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
 
     public void OnComponentPegCountUpdated()
     {
-        _handler.StopTracking();
-
-        _linkable = new LinkableMultiPeg(Inputs);
+        _linkable.InputPegs = Inputs;
         
-        _handler.StartTracking(GetInfo());
+        _handler.UpdateTracking(GetInfo());
     }
 
     protected override void SetDataDefaultValues()

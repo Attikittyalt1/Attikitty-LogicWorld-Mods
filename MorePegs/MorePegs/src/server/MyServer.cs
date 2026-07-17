@@ -7,7 +7,7 @@ namespace MorePegs.Server;
 
 public class MyServer : ServerMod
 {
-    public const bool DEBUG = true;
+    public const bool DEBUG = false;
 
     public static readonly (PackageManager x, PackageManager y) ManagersAboveBoard = (new(), new());
     public static readonly (PackageManager x, PackageManager y) ManagersBelowBoard = (new(), new());
