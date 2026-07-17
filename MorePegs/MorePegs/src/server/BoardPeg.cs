@@ -20,7 +20,6 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
 {
     protected const float Epsilon = 0.01f;
 
-    private (int x, int y) oldPosition;
     private bool _initalizing;
     private Handler2D _handler;
     private ILinkable _linkable;
@@ -72,31 +71,32 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
         return (axisStatus.x ? managers.Item1 : [], axisStatus.y ? managers.Item2 : []);
     }
 
+    public (LinkableContainer x, LinkableContainer y) GetLinkableContainers() => (
+        new()
+        {
+            Address = Address,
+            Linkable = _linkable,
+            Position = GetLinkingPosition().x
+        },
+        new()
+        {
+            Address = Address,
+            Linkable = _linkable,
+            Position = GetLinkingPosition().y
+        }
+    );
+
+    public Handler2D.HandlerInfo2D GetInfo() => new(GetLinkingAddress(), GetValidManagers(), GetLinkableContainers());
+
     public (List<PackageManager> x, List<PackageManager> y) GetActiveManagers() => _handler.ActiveManagers;
 
     protected override void Initialize()
     {
         _linkable = new LinkableMultiPeg(Inputs);
 
-        _handler = new Handler2D(
-            GetLinkingAddress, 
-            (
-                () => new() 
-                {
-                    Address = Address,
-                    Linkable = _linkable,
-                    Position = GetLinkingPosition().x
-                }, 
-                () => new() 
-                {
-                    Address = Address,
-                    Linkable = _linkable,
-                    Position = GetLinkingPosition().y
-                }
-            )
-        );
+        _handler = new Handler2D();
 
-        _handler.StartTracking(GetValidManagers());
+        _handler.StartTracking(GetInfo());
 
         _initalizing = true;
     }
@@ -114,7 +114,7 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
             return;
         }
 
-        _handler.UpdateTracking(GetValidManagers());
+        _handler.UpdateTracking(GetInfo());
     }
 
     protected override void OnCustomDataUpdated()
@@ -123,8 +123,7 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
             return;
         }
 
-        // it should be okay to put false because the handler never changes state between another hook and this one
-        _handler.UpdateTracking(GetValidManagers(), false);
+        _handler.UpdateTracking(GetInfo(), false);
     }
 
     public void OnComponentPegCountUpdated()
@@ -133,7 +132,7 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
 
         _linkable = new LinkableMultiPeg(Inputs);
         
-        _handler.StartTracking(GetValidManagers());
+        _handler.StartTracking(GetInfo());
     }
 
     protected override void SetDataDefaultValues()

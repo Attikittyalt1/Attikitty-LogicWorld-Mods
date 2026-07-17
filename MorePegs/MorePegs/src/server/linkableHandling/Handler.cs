@@ -10,16 +10,17 @@ namespace MorePegs.LogicCode.LinkableHandling;
 
 public class Handler
 {
+    public record HandlerInfo(ComponentAddress Address, IEnumerable<PackageManager> ValidManagers, LinkableContainer Linkable)
+    {
+
+    }
+
     public bool IsBeingTracked { get; private set; } = false;
     public List<PackageManager> ActiveManagers { get; } = [];
-
-    public required Func<ComponentAddress> GetAddress { get; init; }
-    public required Func<LinkableContainer> GetLinkable { get; init; }
-
     private ComponentAddress? _trackerKey;
     private LinkableContainer _linkable;
 
-    public void StartTracking(IEnumerable<PackageManager> packageManagers, bool skipIfIfZeroManagers = true, bool acknowledgePreviousState = true)
+    public void StartTracking(HandlerInfo info, bool skipIfIfZeroManagers = true, bool acknowledgePreviousState = true)
     {
         if (IsBeingTracked)
         {
@@ -29,18 +30,20 @@ public class Handler
             }
         }
 
-        if (skipIfIfZeroManagers && packageManagers.IsEmpty())
+        var validManagers = info.ValidManagers;
+
+        if (skipIfIfZeroManagers && validManagers.IsEmpty())
         {
             return;
         } 
 
         if (IsBeingTracked == false)
         {
-            _trackerKey = GetAddress();
-            _linkable = GetLinkable();
+            _trackerKey = info.Address;
+            _linkable = info.Linkable;
         }
 
-        foreach (var manager in packageManagers)
+        foreach (var manager in validManagers)
         {
             if (acknowledgePreviousState || !ActiveManagers.Contains(manager))
             {
@@ -77,9 +80,11 @@ public class Handler
         IsBeingTracked = false;
     }
 
-    public void UpdateTracking(IEnumerable<PackageManager> packageManagers, bool updatePreviousManagers = true)
+    public void UpdateTracking(HandlerInfo info, bool updatePreviousManagers = true)
     {
-        if (updatePreviousManagers || packageManagers.IsEmpty())
+        var validManagers = info.ValidManagers;
+
+        if (updatePreviousManagers || validManagers.IsEmpty())
         {
             StopTracking(false);
         } 
@@ -87,7 +92,7 @@ public class Handler
         {
             foreach (var manager in ActiveManagers)
             {
-                if (!packageManagers.Contains(manager))
+                if (!validManagers.Contains(manager))
                 {
                     manager.StopTrackingLinkable(_linkable, _trackerKey.Value);
                     ActiveManagers.Remove(manager);
@@ -95,6 +100,6 @@ public class Handler
             }
         }
 
-        StartTracking(packageManagers, true, updatePreviousManagers); // technically I could just put false for acknowledgePreviousState but this makes things a bit nicer
+        StartTracking(info, true, updatePreviousManagers); // technically I could just put false for acknowledgePreviousState but this makes things a bit nicer
     }
 }

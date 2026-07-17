@@ -8,32 +8,27 @@ namespace MorePegs.LogicCode.LinkableHandling;
 
 public class Handler2D
 {
-    private Handler _x;
-    private Handler _y;
-
-    public Handler2D(Func<ComponentAddress> GetAddress, (Func<LinkableContainer> x, Func<LinkableContainer> y) GetLinkable)
+    public record HandlerInfo2D(ComponentAddress Address, (IEnumerable<PackageManager> x, IEnumerable<PackageManager> y) ValidManagers, (LinkableContainer x, LinkableContainer y) Linkable)
     {
-        _x = new Handler()
+        public void Deconstruct(out Handler.HandlerInfo x, out Handler.HandlerInfo y)
         {
-            GetAddress = GetAddress,
-            GetLinkable = GetLinkable.x
-        };
-
-        _y = new Handler()
-        {
-            GetAddress = GetAddress,
-            GetLinkable = GetLinkable.y
-        };
+            x = new Handler.HandlerInfo(Address, ValidManagers.x, Linkable.x);
+            y = new Handler.HandlerInfo(Address, ValidManagers.y, Linkable.y);
+        }
     }
+
+    private readonly Handler _x = new();
+    private readonly Handler _y = new();
 
     public (bool x, bool y) IsBeingTracked { get => (_x.IsBeingTracked, _y.IsBeingTracked); }
 
     public (List<PackageManager> x, List<PackageManager> y) ActiveManagers { get => (_x.ActiveManagers, _y.ActiveManagers); }
 
-    public void StartTracking((IEnumerable<PackageManager> x, IEnumerable<PackageManager> y) managers)
+    public void StartTracking(HandlerInfo2D info)
     {
-        _x.StartTracking(managers.x);
-        _y.StartTracking(managers.y);
+        var (x, y) = info;
+        _x.StartTracking(x);
+        _y.StartTracking(y);
     }
 
     public void StopTracking()
@@ -42,9 +37,10 @@ public class Handler2D
         _y.StopTracking(false);
     }
 
-    public void UpdateTracking((IEnumerable<PackageManager> x, IEnumerable<PackageManager> y) managers, bool updatePreviousManagers = true)
+    public void UpdateTracking(HandlerInfo2D info, bool updatePreviousManagers = true)
     {
-        _x.UpdateTracking(managers.x, updatePreviousManagers);
-        _y.UpdateTracking(managers.y, updatePreviousManagers);
+        var (x, y) = info;
+        _x.UpdateTracking(x, updatePreviousManagers);
+        _y.UpdateTracking(y, updatePreviousManagers);
     }
 }
