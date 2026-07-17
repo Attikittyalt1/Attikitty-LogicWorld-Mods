@@ -117,9 +117,11 @@ public class BoardPeg : LogicComponent<IBoardPegData>, ILogicComponentHooks, IHa
 
     public void OnComponentPegCountUpdated()
     {
+        _linkable.InputPegs = [];
+        _handler.StopTracking();
+
         _linkable.InputPegs = Inputs;
-        
-        _handler.UpdateTracking(GetInfo());
+        _handler.StartTracking(GetInfo());
     }
 
     protected override void SetDataDefaultValues()
