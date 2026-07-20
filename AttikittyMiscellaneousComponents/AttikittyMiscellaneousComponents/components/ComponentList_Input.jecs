@@ -1,0 +1,131 @@
+ManualRelay:
+    column: "Miscellaneous"
+    category: "DynamicRouting"
+    prefab:
+        blocks:
+            - Standard
+        inputs:
+            -
+                position: (-0.5, 0.5, -0.25)
+                rotation: (0, 0, 90)
+                length: 0.62
+            -
+                position: (-0.5, 0.5, 0.25)
+                rotation: (0, 0, 90)
+                length: 0.62
+            -
+                position: (0.5, 0.5, -0.25)
+                rotation: (0, 0, -90)
+                length: 0.62
+            -
+                position: (0.5, 0.5, 0.25)
+                rotation: (0, 0, -90)
+                length: 0.62
+                
+    clientCode: LogicWorld.ClientCode.Switch
+    logicCode: AttikittyMiscellaneousComponents.LogicCode.ManualRelay
+    placingRules:
+        gridPlacingDimensions: (1, 2)
+
+PanelManualRelay:
+    column: "Miscellaneous"
+    category: "DynamicRouting"
+    prefab:
+        blocks:
+            -   # top
+                scale: (1, 1/3, 1)
+
+            -   # bottom
+                rotation: (180, 0, 0)
+                scale: (.999, 5/6, .999)
+                mesh: BetterCube_OpenBottom
+
+                # make the collider not cover the part of the block inside of the board
+                colliderData:
+                    type: Box
+                    transform:
+                        position: (0, 0.8, 0)
+                        scale: (1, 0.4, 1)
+        inputs:
+            -
+                position: (-1/3, -1/2, -0.25)
+                rotation: (180, 0, 0)
+                length: 11/15
+            -
+                position: (-1/3, -1/2, 0.25)
+                rotation: (180, 0, 0)
+                length: 11/15
+            -
+                position: (1/3, -1/2, -0.25)
+                rotation: (180, 0, 0)
+                length: 11/15
+            -
+                position: (1/3, -1/2, 0.25)
+                rotation: (180, 0, 0)
+                length: 11/15
+                
+    clientCode: LogicWorld.ClientCode.Switch
+    logicCode: AttikittyMiscellaneousComponents.LogicCode.ManualRelay
+    placingRules: StandardFlippable
+
+ManualSelector:
+    column: "Miscellaneous"
+    category: "DynamicRouting"
+    prefab:
+        blocks:
+            - Standard
+        inputs:
+            -
+                position: (-0.5, 0.5, 0)
+                rotation: (0, 0, 90)
+                length: 0.62
+            -
+                position: (0.5, 0.5, -0.25)
+                rotation: (0, 0, -90)
+                length: 0.62
+            -
+                position: (0.5, 0.5, 0.25)
+                rotation: (0, 0, -90)
+                length: 0.62
+                
+    clientCode: LogicWorld.ClientCode.Switch
+    logicCode: AttikittyMiscellaneousComponents.LogicCode.ManualSelector
+    placingRules:
+        gridPlacingDimensions: (1, 2)
+
+PanelManualSelector:
+    column: "Miscellaneous"
+    category: "DynamicRouting"
+    prefab:
+        blocks:
+            -   # top
+                scale: (1, 1/3, 1)
+
+            -   # bottom
+                rotation: (180, 0, 0)
+                scale: (.999, 5/6, 0.999)
+                mesh: BetterCube_OpenBottom
+
+                # make the collider not cover the part of the block inside of the board
+                colliderData:
+                    type: Box
+                    transform:
+                        position: (0, 0.8, 0)
+                        scale: (1, 0.4, 1)
+        inputs:
+            -
+                position: (0, -5/6, 0)
+                rotation: (180, 0, 0)
+                length: 0.6
+            -
+                position: (0, -1/2, -1/3)
+                rotation: (180, 0, 0)
+                length: 11/15
+            -
+                position: (0, -1/2, 1/3)
+                rotation: (180, 0, 0)
+                length: 11/15
+                
+    clientCode: LogicWorld.ClientCode.Switch
+    logicCode: AttikittyMiscellaneousComponents.LogicCode.ManualSelector
+    placingRules: StandardFlippable
