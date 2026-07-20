@@ -101,12 +101,6 @@
     <Reference Include="LogicWorld.Modding">
       <HintPath>$(LogicWorldGameLocation)\Logic_World_Data\Managed\LogicWorld.Modding.dll</HintPath>
     </Reference>
-    <Reference Include="LogicWorld.Modding.Assets">
-      <HintPath>$(LogicWorldGameLocation)\Logic_World_Data\Managed\LogicWorld.Modding.Assets.dll</HintPath>
-    </Reference>
-    <Reference Include="LogicWorld.Modding.Compilation">
-      <HintPath>$(LogicWorldGameLocation)\Logic_World_Data\Managed\LogicWorld.Modding.Compilation.dll</HintPath>
-    </Reference>
     <Reference Include="LogicWorld.Models">
       <HintPath>$(LogicWorldGameLocation)\Logic_World_Data\Managed\LogicWorld.Models.dll</HintPath>
     </Reference>
