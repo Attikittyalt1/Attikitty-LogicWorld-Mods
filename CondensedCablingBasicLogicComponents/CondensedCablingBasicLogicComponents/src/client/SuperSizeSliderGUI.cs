@@ -2,14 +2,19 @@
 using EccsGuiBuilder.Client.Layouts.Helper;
 using EccsGuiBuilder.Client.Wrappers;
 using EccsGuiBuilder.Client.Wrappers.AutoAssign;
+using LogicSettings;
 using LogicUI.MenuParts;
 using LogicWorld.UI;
+using System;
 
 namespace CondensedCablingBasicLogicComponents.Client;
 
 public class SuperSizeSliderGUI : EditComponentMenu<SuperSizeSliderData>, IAssignMyFields
 {
-    
+
+    [Setting_SliderInt("CondensedCablingBasicLogicComponents.MaxSuperSize")]
+    public static int MaxSuperSize { get; set; } = 8;
+
     public static void Build(string windowLocalizationKey, string sliderLocalizationkey)
     {
         WS.window(windowLocalizationKey)
@@ -54,7 +59,7 @@ public class SuperSizeSliderGUI : EditComponentMenu<SuperSizeSliderData>, IAssig
     {
         var data = FirstComponentBeingEdited.Data;
         SliderValue.SetValueWithoutNotify(data.CurrentValue);
-        SliderValue.Max = data.GetMax();
+        SliderValue.Max = Math.Min(MaxSuperSize, data.GetMax());
         SliderValue.Min = data.GetMin();
         SliderValue.SliderInterval = data.GetInterval();
     }

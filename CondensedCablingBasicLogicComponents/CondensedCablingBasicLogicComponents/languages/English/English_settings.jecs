@@ -1,0 +1,7 @@
+MHG.SettingsMenu.Pages.Gameplay.Headings.CondensedCablingBasicLogicComponents: "Mod: Basic Super Logic Components"
+
+CondensedCablingBasicLogicComponents.MaxSuperSize : "Max Super Size"
+CondensedCablingBasicLogicComponents.MaxSuperSize.Description : """
+    Maximum bit count of pegs attached to super components.
+    """
+    
