@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttikittySelectionTools", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AttikittyMiscellaneousComponents", "AttikittyMiscellaneousComponents\AttikittyMiscellaneousComponents.csproj", "{DCDD3C36-AEC7-4A72-B558-2420A9E413CC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CondensedCablingBasicLogicComponents", "CondensedCablingBasicLogicComponents\CondensedCablingBasicLogicComponents.csproj", "{A3A898B7-2D73-49A0-B419-FF5848FA3F24}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{DCDD3C36-AEC7-4A72-B558-2420A9E413CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCDD3C36-AEC7-4A72-B558-2420A9E413CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCDD3C36-AEC7-4A72-B558-2420A9E413CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3A898B7-2D73-49A0-B419-FF5848FA3F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3A898B7-2D73-49A0-B419-FF5848FA3F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3A898B7-2D73-49A0-B419-FF5848FA3F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3A898B7-2D73-49A0-B419-FF5848FA3F24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

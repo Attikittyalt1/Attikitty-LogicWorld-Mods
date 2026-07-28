@@ -1,0 +1,12 @@
+ID: CondensedCablingBasicLogicComponents
+Name: Basic Super Logic Components
+Author: Attikitty
+Version: 1.0.0
+Priority: -1
+
+Dependencies:
+    - EccsLogicWorldAPI
+    - SkysGeneralLib
+    - SkysCondensedCablingLib
+ClientDependencies:
+    - EccsGuiBuilder

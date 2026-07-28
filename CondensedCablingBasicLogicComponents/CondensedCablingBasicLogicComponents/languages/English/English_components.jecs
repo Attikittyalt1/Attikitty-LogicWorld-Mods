@@ -1,0 +1,8 @@
+ComponentCategory.SuperLogic: "Super Logic"
+
+CondensedCablingBasicLogicComponents.SuperBuffer: "Super Buffer"
+CondensedCablingBasicLogicComponents.SuperInverter: "Super Inverter"
+CondensedCablingBasicLogicComponents.SuperAndGate: "Super And Gate"
+CondensedCablingBasicLogicComponents.SuperXorGate: "Super Xor Gate"
+CondensedCablingBasicLogicComponents.SuperDLatch: "Super D-Latch"
+CondensedCablingBasicLogicComponents.SuperRandomizer: "Super Oracle"
