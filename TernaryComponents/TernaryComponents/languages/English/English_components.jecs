@@ -1,0 +1,11 @@
+ComponentCategory.Ternary: "Ternary"
+
+TernaryComponents.TernaryBuffer: "T. Buffer"
+TernaryComponents.TernaryInverter: "T. Inverter"
+TernaryComponents.TernaryMinGate: "Mininum Gate"
+TernaryComponents.TernaryMaxGate: "Maximum Gate"
+TernaryComponents.TernaryConGate: "Consensus Gate"
+TernaryComponents.TernaryAnyGate: "Any Gate"
+TernaryComponents.TernaryDefaulter: "Defaulter"
+TernaryComponents.TernaryDLatch: "T. D-Latch"
+TernaryComponents.TernaryDirectionalRelay: "Directional Relay"

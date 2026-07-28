@@ -159,7 +159,6 @@
 
 	<ItemGroup>
 		<Folder Include="dependencies\" />
-		<Folder Include="TernaryComponents\languages\English\" />
 	</ItemGroup>
 
 </Project>
