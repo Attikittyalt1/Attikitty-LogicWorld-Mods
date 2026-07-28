@@ -1,5 +1,4 @@
-﻿using CondensedCablingBasicLogicComponents.Shared;
-using EccsLogicWorldAPI.Client.Hooks;
+﻿using EccsLogicWorldAPI.Client.Hooks;
 using LogicAPI.Client;
 using LogicWorld;
 using System;
