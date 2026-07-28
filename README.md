@@ -27,5 +27,6 @@ And thanks to Jimmy and all the other devs for making this awesome game!
 
 #### Client & Server: (Installed on both sides)
 
-- `MorePegs`: Adds a variety of routing components. (Currently one :P)
+- `CondensedCablingBasicLogicComponents`: Adds copies of most base components that work with SkysCondensedCablingLib.
 - `HoverPads`: Adds mounts that levitate a component above them.
+- `MorePegs`: Adds a variety of routing components. (Currently one :P)
