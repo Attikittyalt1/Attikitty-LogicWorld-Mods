@@ -29,8 +29,6 @@ public class SuperSizeSliderGUI : EditComponentMenu<SuperSizeSliderData>, IAssig
                 )
                 .add(WS.slider
                     .injectionKey(nameof(SliderValue))
-                    .setMin(1)
-                    .setMax(32)
                     .fixedSize(400, 38)
                 )
             )
