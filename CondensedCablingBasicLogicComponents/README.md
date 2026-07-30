@@ -9,6 +9,8 @@ Adds copies of most base components that work with SkysCondensedCablingLib.
 - Super Xor Gate
 - Super D-Latch
 - Super Oracle
+- Super Relay
+- Super Shifter
 
 ## Install / Dependencies:
 
