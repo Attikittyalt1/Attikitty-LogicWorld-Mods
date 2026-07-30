@@ -38,8 +38,7 @@ public class SuperShifter : GenericSuperGate
             dataA.AddPhasicLinkWith(dataB, (i, i+1));
         }
 
-        LConsole.WriteLine(size);
-        //dataA.AddPhasicLinkWith(carryB, size - 1);
+        //dataA.AddPhasicLinkWith(carryB, size - 1); WHY DOESNT THIS WORK AHHHH
         dataB.AddPhasicLinkWith(carryA, 0);
     }
 }
