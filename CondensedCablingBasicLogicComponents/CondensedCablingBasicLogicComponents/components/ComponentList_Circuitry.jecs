@@ -194,6 +194,4 @@ SuperMixer:
     placingRules:
         offsetDimensions: (2, 1)
         allowFineRotation: false
-        canBeFlipped: true
-        flippingPointHeight: 0.5
         GridPositionsAreRelative: true
