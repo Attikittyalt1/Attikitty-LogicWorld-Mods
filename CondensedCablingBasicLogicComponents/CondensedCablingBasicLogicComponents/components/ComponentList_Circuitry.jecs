@@ -151,3 +151,30 @@ SuperBuffer:
     clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
     placingRules: Standard
     
+SuperShifter:
+    column: "Logic"
+    category: "SuperLogic"
+    prefab:
+        blocks:
+            -
+                color: BAAE89
+        inputs:
+            -
+                position: (-0.25, 0.5, -0.5)
+                rotation: (-90, 0, 0)
+                length: 0.62
+            -
+                position: (0.25, 0.5, 0.5)
+                rotation: (90, 0, 0)
+                length: 0.62
+            -
+                position: (0.25, 0.5, -0.5)
+                rotation: (-90, 0, 0)
+                length: 0.62
+            -
+                position: (-0.25, 0.5, 0.5)
+                rotation: (90, 0, 0)
+                length: 0.62
+    logicCode: CondensedCablingBasicLogicComponents.Server.SuperShifter
+    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
+    placingRules: Standard
