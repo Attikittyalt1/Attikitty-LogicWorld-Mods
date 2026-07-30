@@ -2,7 +2,7 @@
 
 namespace CondensedCablingBasicLogicComponents.Server;
 
-public class SuperBuffer : GenericSuperGate
+public class SuperBuffer : GenericSingleSliderSuperGate
 {
     protected override void DoLogicUpdate()
     {

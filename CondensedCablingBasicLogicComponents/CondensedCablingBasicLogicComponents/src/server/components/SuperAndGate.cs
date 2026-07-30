@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace CondensedCablingBasicLogicComponents.Server;
 
-public class SuperAndGate : GenericSuperGate
+public class SuperAndGate : GenericSingleSliderSuperGate
 {
     protected override void DoLogicUpdate()
     {

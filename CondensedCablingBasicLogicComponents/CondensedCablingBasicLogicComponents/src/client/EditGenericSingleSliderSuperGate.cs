@@ -9,30 +9,33 @@ using System;
 
 namespace CondensedCablingBasicLogicComponents.Client;
 
-public class SuperSizeSliderGUI : EditComponentMenu<SuperSizeSliderData>, IAssignMyFields
+public class EditGenericSingleSliderSuperGate : EditComponentMenu<SuperSizeSingleSliderData>, IAssignMyFields
 {
 
-    [Setting_SliderInt("CondensedCablingBasicLogicComponents.MaxSuperSize")]
-    public static int MaxSuperSize { get; set; } = 8;
-
-    public static void Build(string windowLocalizationKey, string sliderLocalizationkey)
+    public static void Build(string windowName, string containerName, string sliderLocalizationkey)
     {
-        WS.window(windowLocalizationKey)
+        WS.window(windowName)
             .setYPosition(870)
             .setMinSize(800, 0)
             .setDefaultSize(800, 0)
             .configureContent(content => content
                 .layoutVertical()
-                .add(WS.textLine
-                    .setLocalizationKey(sliderLocalizationkey)
-                    .setFontSize(40)
-                )
-                .add(WS.slider
-                    .injectionKey(nameof(SliderValue))
-                    .fixedSize(400, 38)
+                .addContainer(containerName, link => link
+                    .layoutVertical()
+                    .add(WS.textLine
+                        .setLocalizationKey(sliderLocalizationkey)
+                        .setFontSize(40)
+                    )
+                    .add(WS.slider
+                        .injectionKey(nameof(SliderValue))
+                        .fixedSize(400, 38)
+                        .setInterval(1)
+                        .setMin(1)
+                        .setMax(Math.Min(MyClient.MaxSuperSize, 256))
+                    )
                 )
             )
-            .add<SuperSizeSliderGUI>()
+            .add<EditGenericSingleSliderSuperGate>()
             .build();
     }
 
@@ -47,7 +50,7 @@ public class SuperSizeSliderGUI : EditComponentMenu<SuperSizeSliderData>, IAssig
         {
             foreach (var entry in ComponentsBeingEdited)
             {
-                entry.Data.CurrentValue = (int)value;
+                entry.Data.BitSize = (int)value;
             }
 
         };
@@ -56,9 +59,6 @@ public class SuperSizeSliderGUI : EditComponentMenu<SuperSizeSliderData>, IAssig
     protected override void OnStartEditing()
     {
         var data = FirstComponentBeingEdited.Data;
-        SliderValue.SetValueWithoutNotify(data.CurrentValue);
-        SliderValue.Max = Math.Min(MaxSuperSize, data.GetMax());
-        SliderValue.Min = data.GetMin();
-        SliderValue.SliderInterval = data.GetInterval();
+        SliderValue.SetValueWithoutNotify(data.BitSize);
     }
 }

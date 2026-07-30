@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CondensedCablingBasicLogicComponents.Server;
 
-public class SuperRelay : GenericSuperGate
+public class SuperRelay : GenericSingleSliderSuperGate
 {
     private bool[] _previousState = [];
 

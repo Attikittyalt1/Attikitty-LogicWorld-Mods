@@ -1,1 +1,4 @@
-CondensedCablingBasicLogicComponents.Gui.GenericSuperComponent.SuperSize : "Bit Count:"
+CondensedCablingBasicLogicComponents.Gui.GenericSingleSliderSuperGate.Slider : "Bit Count:"
+
+CondensedCablingBasicLogicComponents.Gui.GenericDoubleSliderSuperGate.SliderA : "Left Bit Count:"
+CondensedCablingBasicLogicComponents.Gui.GenericDoubleSliderSuperGate.SliderB : "Right Bit Count:"

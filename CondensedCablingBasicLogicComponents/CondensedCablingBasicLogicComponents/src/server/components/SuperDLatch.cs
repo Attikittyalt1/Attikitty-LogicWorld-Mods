@@ -2,7 +2,7 @@
 
 namespace CondensedCablingBasicLogicComponents.Server;
 
-public class SuperDLatch : GenericSuperGate
+public class SuperDLatch : GenericSingleSliderSuperGate
 {
     public override int InputSuperSize(int index) => index == 1 ? 0 : base.InputSuperSize(index);
 

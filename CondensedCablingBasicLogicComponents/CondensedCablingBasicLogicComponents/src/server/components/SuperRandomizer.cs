@@ -3,7 +3,7 @@ using SkysCondensedCablingLib.Server;
 
 namespace CondensedCablingBasicLogicComponents.Server;
 
-public class SuperRandomizer : GenericSuperGate
+public class SuperRandomizer : GenericSingleSliderSuperGate
 {
     private static readonly JRandom random = new JRandom();
 

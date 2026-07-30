@@ -13,7 +13,7 @@ SuperInverter:
                 rotation: (90, 0, 0)
                 startOn: true
     logicCode: CondensedCablingBasicLogicComponents.Server.SuperInverter
-    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
+    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSingleSliderSuperGate
     placingRules:
         gridPlacingDimensions: (1, 2)
 
@@ -40,7 +40,7 @@ SuperXorGate:
                 position: (1, 0.5, 0.5)
                 rotation: (90, 0, 0)
     logicCode: CondensedCablingBasicLogicComponents.Server.SuperXorGate
-    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
+    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSingleSliderSuperGate
     placingRules:
         offsetDimensions: (2, 1)
         gridPlacingDimensions: (2, 2)
@@ -52,7 +52,7 @@ SuperAndGate:
     column: "Logic"
     category: "SuperLogic"
     logicCode: CondensedCablingBasicLogicComponents.Server.SuperAndGate
-    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
+    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSingleSliderSuperGate
     prefabGenerator: LogicWorld.ClientCode.DynamicGenerators.AndGatePrefabGenerator
     placingRulesGenerator: LogicWorld.ClientCode.DynamicGenerators.AndGatePlacingRulesGenerator
 
@@ -76,7 +76,7 @@ SuperDLatch:
             -
                 position: (0, 1, 1)
     logicCode: CondensedCablingBasicLogicComponents.Server.SuperDLatch
-    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
+    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSingleSliderSuperGate
     placingRules:
         offsetDimensions: (1, 2)
         gridPlacingDimensions: (1, 3)
@@ -100,7 +100,7 @@ SuperRandomizer:
                 position: (0, 1.5, 0.5)
                 rotation: (90, 0, 0)
     logicCode: CondensedCablingBasicLogicComponents.Server.SuperRandomizer
-    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
+    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSingleSliderSuperGate
     placingRules:
         gridPlacingDimensions: (1, 3)
 
@@ -125,7 +125,7 @@ SuperRelay:
                 rotation: (90, 0, 0)
                 length: 0.62
     logicCode: CondensedCablingBasicLogicComponents.Server.SuperRelay
-    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
+    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSingleSliderSuperGate
     placingRules:
         offsetDimensions: (1, 2)
         gridPlacingDimensions: (1, 4)
@@ -148,7 +148,7 @@ SuperBuffer:
                 position: (0, 0.4, 0.5)
                 rotation: (90, 0, 0)
     logicCode: CondensedCablingBasicLogicComponents.Server.SuperBuffer
-    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
+    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSingleSliderSuperGate
     placingRules: Standard
     
 SuperShifter:
@@ -164,17 +164,17 @@ SuperShifter:
                 rotation: (-90, 0, 0)
                 length: 0.62
             -
-                position: (0.25, 0.5, 0.5)
-                rotation: (90, 0, 0)
-                length: 0.62
-            -
                 position: (0.25, 0.5, -0.5)
                 rotation: (-90, 0, 0)
+                length: 0.62
+            -
+                position: (0.25, 0.5, 0.5)
+                rotation: (90, 0, 0)
                 length: 0.62
             -
                 position: (-0.25, 0.5, 0.5)
                 rotation: (90, 0, 0)
                 length: 0.62
     logicCode: CondensedCablingBasicLogicComponents.Server.SuperShifter
-    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
+    clientCode: CondensedCablingBasicLogicComponents.Client.GenericDoubleSliderSuperGate
     placingRules: Standard

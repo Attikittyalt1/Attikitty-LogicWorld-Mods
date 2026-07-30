@@ -2,7 +2,7 @@
 
 namespace CondensedCablingBasicLogicComponents.Server;
 
-public class SuperInverter : GenericSuperGate
+public class SuperInverter : GenericSingleSliderSuperGate
 {
     protected override void DoLogicUpdate()
     {
