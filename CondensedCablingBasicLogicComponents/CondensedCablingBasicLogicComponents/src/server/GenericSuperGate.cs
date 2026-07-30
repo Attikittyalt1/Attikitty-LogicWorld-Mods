@@ -13,6 +13,12 @@ public abstract class GenericSuperGate : LogicComponent<SuperSizeSliderData>, IH
 
     protected override void SetDataDefaultValues() => Data.Initialize();
 
+    protected override void Initialize()
+    {
+        // whyyy do i need to do this??? fix please sky
+        this.EnsureSuperPegsAreCorrect();
+    }
+
     protected override void OnCustomDataUpdated()
     {
         if (PreviousSize == Data.CurrentValue)

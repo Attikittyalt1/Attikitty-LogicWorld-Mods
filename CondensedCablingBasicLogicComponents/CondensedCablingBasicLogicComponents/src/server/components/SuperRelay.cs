@@ -27,6 +27,7 @@ public class SuperRelay : GenericSuperGate
 
     protected override void Initialize()
     {
+        base.Initialize();
         UpdateLinks(true);
     }
 
@@ -35,11 +36,6 @@ public class SuperRelay : GenericSuperGate
         var input0 = Inputs[0] as SuperInputPeg;
         var input1 = Inputs[1] as SuperInputPeg;
         var input2 = Inputs[2] as SuperInputPeg;
-
-        if (input0 == null)
-        {
-            LConsole.WriteLine("whyyyyy: {0}", InputSuperSize(0));
-        }
 
         var size = input0.BaseSize;
 
