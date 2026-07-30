@@ -151,30 +151,49 @@ SuperBuffer:
     clientCode: CondensedCablingBasicLogicComponents.Client.GenericSingleSliderSuperGate
     placingRules: Standard
     
-SuperShifter:
+SuperMixer:
     column: "Logic"
     category: "SuperLogic"
     prefab:
         blocks:
             -
                 color: BAAE89
+                scale: (7/4, 1, 1)
+                position: (5/8, 0, 0)
+            -
+                color: BAAE89
+                scale: (1, 1/3, 1/4)
+                position: (-3/8, 1/2, 0)
+                rotation: (0, -90, 0)
+                mesh: BufferBody
+            -
+                color: BAAE89
+                scale: (1, 1/3, 1/4)
+                position: (-3/8, 1/2, 0)
+                rotation: (0, -90, 180)
+                mesh: BufferBody
         inputs:
             -
-                position: (-0.25, 0.5, -0.5)
+                position: (1, 0.5, -0.5)
                 rotation: (-90, 0, 0)
                 length: 0.62
             -
-                position: (0.25, 0.5, -0.5)
+                position: (0, 0.5, -0.5)
                 rotation: (-90, 0, 0)
                 length: 0.62
             -
-                position: (0.25, 0.5, 0.5)
+                position: (0, 0.5, 0.5)
                 rotation: (90, 0, 0)
                 length: 0.62
             -
-                position: (-0.25, 0.5, 0.5)
+                position: (1, 0.5, 0.5)
                 rotation: (90, 0, 0)
                 length: 0.62
-    logicCode: CondensedCablingBasicLogicComponents.Server.SuperShifter
+    logicCode: CondensedCablingBasicLogicComponents.Server.SuperMixer
     clientCode: CondensedCablingBasicLogicComponents.Client.GenericDoubleSliderSuperGate
-    placingRules: Standard
+    placingRules:
+        offsetDimensions: (2, 1)
+        allowFineRotation: false
+        canBeFlipped: true
+        flippingPointHeight: 0.5
+        GridPositionsAreRelative: true

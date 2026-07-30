@@ -10,7 +10,7 @@ Adds copies of most base components that work with SkysCondensedCablingLib.
 - Super D-Latch
 - Super Oracle
 - Super Relay
-- Super Shifter
+- Super Mixer
 
 ## Install / Dependencies:
 

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CondensedCablingBasicLogicComponents.Server;
 
-public class SuperShifter : GenericDoubleSliderSuperGate
+public class SuperMixer : GenericDoubleSliderSuperGate
 {
     public override bool InputAtIndexShouldTriggerComponentLogicUpdates(int inputIndex) => false;
 
