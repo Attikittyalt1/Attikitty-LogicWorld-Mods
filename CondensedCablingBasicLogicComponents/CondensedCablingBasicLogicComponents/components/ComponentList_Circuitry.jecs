@@ -104,6 +104,33 @@ SuperRandomizer:
     placingRules:
         gridPlacingDimensions: (1, 3)
 
+SuperRelay:
+    column: "Logic"
+    category: "SuperLogic"
+    prefab:
+        blocks:
+            -
+                color: 7E133B
+                position: (0, 0, 0.5)
+                scale: (1, 1, 2)
+        inputs:
+            -
+                position: (0, 1, 0.5)
+            -
+                position: (0, 0.5, -0.5)
+                rotation: (-90, 0, 0)
+                length: 0.62
+            -
+                position: (0, 0.5, 1.5)
+                rotation: (90, 0, 0)
+                length: 0.62
+    logicCode: CondensedCablingBasicLogicComponents.Server.SuperRelay
+    clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
+    placingRules:
+        offsetDimensions: (1, 2)
+        gridPlacingDimensions: (1, 4)
+        allowFineRotation: false
+        
 SuperBuffer:
     column: "Logic"
     category: "SuperLogic"
@@ -123,3 +150,4 @@ SuperBuffer:
     logicCode: CondensedCablingBasicLogicComponents.Server.SuperBuffer
     clientCode: CondensedCablingBasicLogicComponents.Client.GenericSuperGate
     placingRules: Standard
+    

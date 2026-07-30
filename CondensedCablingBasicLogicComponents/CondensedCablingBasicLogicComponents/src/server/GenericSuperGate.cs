@@ -6,7 +6,7 @@ namespace CondensedCablingBasicLogicComponents.Server;
 
 public abstract class GenericSuperGate : LogicComponent<SuperSizeSliderData>, IHasSuperPegs
 {
-    public int PreviousData = default;
+    public int PreviousSize = default;
 
     public virtual int InputSuperSize(int index) => Data.CurrentValue;
     public virtual int OutputSuperSize(int index) => Data.CurrentValue;
@@ -15,13 +15,13 @@ public abstract class GenericSuperGate : LogicComponent<SuperSizeSliderData>, IH
 
     protected override void OnCustomDataUpdated()
     {
-        if (PreviousData == Data.CurrentValue)
+        if (PreviousSize == Data.CurrentValue)
         {
             return;
         }
 
         this.EnsureSuperPegsAreCorrect();
 
-        PreviousData = Data.CurrentValue;
+        PreviousSize = Data.CurrentValue;
     }
 }
